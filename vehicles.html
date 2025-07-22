@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vehicles - Travel Agency</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+  <header>
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+          <i class="fas fa-user" id="openAuthModal"></i>
+        </span>
+      </div>
+    </div>
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tours.html">Tours</a></li>
+          <li><a href="vehicles.html" class="active">Vehicles</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="houses_villas.html">Houses & Villas</a></li>
+          <li><a href="rewards.html">Rewards</a></li>
+          <li><a href="travel-blog.html">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Find the Perfect Vehicle for Your Journey</h2>
+    <p>Choose from a wide range of vehicles tailored to your travel needs.</p>
+    <div class="filters">
+      <select id="vehicleType">
+        <option value="All">All Types</option>
+        <option value="Car">Car</option>
+        <option value="SUV">SUV</option>
+        <option value="Van">Van</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Bus">Bus</option>
+      </select>
+
+      <select id="vehicleBudget">
+        <option value="All">Your Budget ($)</option>
+        <option value="100">Under $100</option>
+        <option value="500">Under $500</option>
+        <option value="1000">Under $1,000</option>
+      </select>
+
+      <button onclick="filterVehicles()">Find Your Vehicle</button>
+    </div>
+  </section>
+
+  <section class="available-vehicles">
+    <h2>Available Vehicles</h2>
+    <div class="offers-grid" id="vehicleCards">
+      <div class="offer-card" data-type="Car" data-price="50">
+        <img src="car.jpg" alt="Compact Car">
+        <h3>Compact Car</h3>
+        <p class="vehicle-price">Starting at $50/day</p>
+        <button onclick="bookVehicle('compact-car')">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-type="SUV" data-price="80">
+        <img src="space car.jpg" alt="Spacious SUV">
+        <h3>Spacious SUV</h3>
+        <p class="vehicle-price">Starting at $80/day</p>
+        <button onclick="bookVehicle('spacious-suv')">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-type="Van" data-price="120">
+        <img src="van.jpg" alt="Family Van">
+        <h3>Family Van</h3>
+        <p class="vehicle-price">Starting at $120/day</p>
+        <button onclick="bookVehicle('family-van')">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-type="Luxury" data-price="200">
+        <img src="lux.jpg" alt="Luxury Car">
+        <h3>Luxury Car</h3>
+        <p class="vehicle-price">Starting at $200/day</p>
+        <button onclick="bookVehicle('luxury-car')">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-type="Bus" data-price="400">
+        <img src="bus.jpg" alt="Tour Bus">
+        <h3>Tour Bus</h3>
+        <p class="vehicle-price">Starting at $400/day</p>
+        <button onclick="bookVehicle('tour-bus')">Book Now</button>
+      </div>
+    </div>
+
+    <div id="noVehiclesMessage" style="text-align:center; display:none; margin-top: 20px; font-size: 1.2rem; color: #777;">
+      No vehicles found matching your criteria.
+    </div>
+  </section>
+  <section class="why-choose-us">
+  <h2>Why Choose Us?</h2>
+  <div class="reasons">
+    <div class="reason">
+      <h3>Well-Maintained Fleet</h3>
+      <p>All vehicles are regularly serviced and inspected for safety.</p>
+    </div>
+    <div class="reason">
+      <h3>Affordable Rental Plans</h3>
+      <p>Flexible pricing to fit every budget and travel need.</p>
+    </div>
+    <div class="reason">
+      <h3>24/7 Roadside Assistance</h3>
+      <p>We're here to help if anything goes wrong during your trip.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>Testimonials</h2>
+  <h4>What our vehicle renters say</h4>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <p>"Rented an SUV for our road trip – super clean and smooth ride!"</p>
+      <p>- Arjun Mehta</p>
+    </div>
+    <div class="testimonial">
+      <p>"The bike rental made exploring the city so much fun and easy."</p>
+      <p>- Sara Wilson</p>
+    </div>
+    <div class="testimonial">
+      <p>"Excellent service and reliable vehicles. Highly recommend!"</p>
+      <p>- Karan Desai</p>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+
+  <div id="loginContainer"></div>
+  <div id="sidebarContainer"></div>
+<script src="jspdf.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script src="ticketDownload.js"></script>
+
+<script>
+  // ✅ Make logoutUser globally available BEFORE sidebar loads
+  window.logoutUser = function () {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    localStorage.removeItem("selectedVehicleKey");
+    location.reload();
+  };
+
+  const currencyRates = {
+    USD: 1,
+    INR: 86.58,
+    EUR: 0.92
+  };
+
+  const currencySymbols = {
+    USD: "$",
+    INR: "₹",
+    EUR: "€"
+  };
+
+  let currentCurrency = localStorage.getItem("selectedCurrency") || "USD";
+
+  function formatPrice(amount, currency) {
+    return currencySymbols[currency] + amount.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  }
+
+  function updateVehiclePrices() {
+    document.querySelectorAll(".offer-card").forEach(card => {
+      const basePriceUSD = parseFloat(card.getAttribute("data-price"));
+      const converted = basePriceUSD * currencyRates[currentCurrency];
+      card.querySelector(".vehicle-price").textContent = `Starting at ${formatPrice(converted, currentCurrency)}/day`;
+    });
+  }
+
+  function filterVehicles() {
+    const type = document.getElementById("vehicleType").value;
+    const budget = document.getElementById("vehicleBudget").value;
+
+    let budgetLimit = Infinity;
+    if (budget === "100") budgetLimit = 100;
+    else if (budget === "500") budgetLimit = 500;
+    else if (budget === "1000") budgetLimit = 1000;
+
+    const cards = document.querySelectorAll(".offer-card");
+    let matchCount = 0;
+
+    cards.forEach(card => {
+      const cardType = card.getAttribute("data-type");
+      const cardPrice = parseFloat(card.getAttribute("data-price"));
+      const matchType = type === "All" || cardType === type;
+      const matchBudget = budget === "All" || cardPrice <= budgetLimit;
+
+      if (matchType && matchBudget) {
+        card.style.display = "block";
+        matchCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    document.getElementById("noVehiclesMessage").style.display = matchCount === 0 ? "block" : "none";
+  }
+
+  function bookVehicle(vehicleKey) {
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      localStorage.setItem("selectedVehicleKey", vehicleKey);
+      window.location.href = `vehicle-info.html?vehicle=${vehicleKey}`;
+    } else {
+      document.getElementById("openAuthModal")?.click();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector(".currency-dropdown").value = currentCurrency;
+    updateVehiclePrices();
+
+    if (localStorage.getItem("bookingConfirmed") === "true") {
+      const popup = document.getElementById("welcomePopup");
+      popup.innerText = "🎉 Booking Confirmed!";
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+        localStorage.removeItem("bookingConfirmed");
+      }, 3000);
+    }
+
+    fetch("login.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("loginContainer").innerHTML = html;
+        setTimeout(() => {
+          if (typeof attachAuthHandlers === "function") attachAuthHandlers();
+        }, 200);
+      });
+if (localStorage.getItem("isLoggedIn") === "true") {
+  if (typeof loadSidebar === "function") {
+    loadSidebar();
+  } else {
+    // Retry after short delay in case auth.js isn't loaded yet
+    setTimeout(() => {
+      if (typeof loadSidebar === "function") loadSidebar();
+    }, 300);
+  }
+}
+
+      // ✅ Bind logout after sidebar is injected
+      setTimeout(() => {
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("username");
+            localStorage.removeItem("selectedVehicleKey");
+            location.reload();
+          });
+        }
+      }, 200);
+    });
+  document.querySelector(".currency-dropdown").addEventListener("change", () => {
+    currentCurrency = document.querySelector(".currency-dropdown").value;
+    localStorage.setItem("selectedCurrency", currentCurrency);
+    updateVehiclePrices();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Explore Italy</title>
+  <link rel="stylesheet" href="country.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="mainContent">
+    <header class="hero-section" style="background: url('italy1.jpg') no-repeat center center; background-size: cover;">
+      <div class="hero-content">
+        <h1>Experience Timeless Italy</h1>
+        <p>Rome, Venice, pasta and passion</p>
+      </div>
+    </header>
+
+    <section class="tour-info">
+      <div class="info-card"><h2>Price</h2><p class="price" data-amount="3500">$3,500</p></div>
+      <div class="info-card"><h2>Duration</h2><p>10 Days, 9 Nights</p></div>
+      <div class="info-card"><h2>Includes</h2><p>Flight, Hotel, Gondola Ride, Museum Passes</p></div>
+    </section>
+
+    <section class="description">
+      <img src="italy.jpg" alt="Italy Tour" />
+      <p>Wander through Rome’s Colosseum, sail the canals of Venice, and savor Tuscan wines. Italy is a symphony of art, cuisine, and culture waiting to be explored.</p>
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </section>
+
+    <section class="highlights">
+      <h2>Tour Highlights</h2>
+      <ul>
+        <li>Colosseum and Vatican City tour</li>
+        <li>Gondola ride in Venice</li>
+        <li>Leaning Tower of Pisa</li>
+        <li>Tuscan vineyard wine tasting</li>
+        <li>Authentic Italian cooking class</li>
+      </ul>
+    </section>
+
+    <section class="itinerary">
+      <h2>Sample Itinerary</h2>
+      <ol>
+        <li>Day 1-3: Rome – Ancient ruins, Vatican</li>
+        <li>Day 4-5: Florence – Art museums, cathedral</li>
+        <li>Day 6: Pisa – Leaning Tower visit</li>
+        <li>Day 7-8: Venice – Gondola, island hopping</li>
+        <li>Day 9-10: Tuscany – Wine tasting, countryside</li>
+      </ol>
+    </section>
+
+    <section class="why-us">
+      <h2>Why Choose Us</h2>
+      <p>We offer handpicked experiences, expert guides, and seamless travel so you can live "la dolce vita."</p>
+    </section>
+
+    <section class="cta">
+      <h2>Ready for Italy?</h2>
+      <p>Book now and fall in love with Italy’s eternal charm.</p>
+      <button class="book-now-btn" id="openBookingBtn">Book Now</button>
+    </section>
+  </div>
+
+  <div id="overlay" class="overlay"></div>
+  <div id="bookingContainer" class="booking-popup"></div>
+  <div id="sidebarContainer"></div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const bookingContainer = document.getElementById("bookingContainer");
+    const mainContent = document.getElementById("mainContent");
+    const bookNowBtn = document.getElementById("openBookingBtn");
+    const currentDestination = "Italy";
+    sessionStorage.setItem("selectedTourName", currentDestination);
+
+    const exchangeRates = { USD: 1, INR: 86.58, EUR: 0.92 };
+    const currencySymbols = { USD: "$", INR: "₹", EUR: "€" };
+
+    function updateBookButtonStatus() {
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) return;
+
+      const allTickets = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+      const bookings = allTickets[userEmail] || [];
+
+      const booked = bookings.find(b => b.title === currentDestination);
+      if (booked) {
+        bookNowBtn.innerText = "Booked ✅";
+        bookNowBtn.disabled = true;
+        bookNowBtn.style.backgroundColor = "#28a745";
+        bookNowBtn.style.cursor = "not-allowed";
+      } else {
+        bookNowBtn.innerText = "Book Now";
+        bookNowBtn.disabled = false;
+        bookNowBtn.style.backgroundColor = "#007bff";
+        bookNowBtn.style.cursor = "pointer";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateBookButtonStatus();
+      injectProfileSidebar();
+    });
+
+    bookNowBtn.addEventListener("click", () => {
+      if (localStorage.getItem("isLoggedIn") !== "true") {
+        alert("Please log in to book a tour.");
+        return;
+      }
+
+      overlay.classList.add("active");
+      bookingContainer.classList.add("active");
+      mainContent.classList.add("blurred");
+
+      fetch("booking.html")
+        .then(res => res.text())
+        .then(html => {
+          bookingContainer.innerHTML = html;
+
+          const closeBtn = bookingContainer.querySelector(".close-btn");
+          closeBtn?.addEventListener("click", closeModal);
+
+          const bookingForm = bookingContainer.querySelector("#bookingForm");
+
+          bookingForm?.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const travelerName = document.getElementById("travelerName").value;
+            const from = document.getElementById("from").value;
+            const date = document.getElementById("date").value;
+            const travelers = document.getElementById("travelers").value;
+            const payment = document.getElementById("payment").value;
+            const userEmail = localStorage.getItem("userEmail");
+
+            if (!userEmail) {
+              alert("Please log in to book.");
+              return;
+            }
+
+            const baseUSD = parseFloat(document.querySelector(".price").getAttribute("data-amount"));
+            const selectedCurrency = localStorage.getItem("selectedCurrency") || "USD";
+            const convertedPrice = Math.round(baseUSD * exchangeRates[selectedCurrency]);
+
+            const ticket = {
+              title: currentDestination,
+              travelerName,
+              from,
+              date,
+              travelers,
+              paymentMethod: payment,
+              price: convertedPrice,
+              currency: selectedCurrency,
+              bookedAt: new Date().toLocaleDateString(),
+              type: "tour"
+            };
+
+            const allTickets = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+            const userTickets = allTickets[userEmail] || [];
+
+            if (!userTickets.some(b => b.title === currentDestination)) {
+              userTickets.push(ticket);
+              allTickets[userEmail] = userTickets;
+              localStorage.setItem("bookedTickets", JSON.stringify(allTickets));
+            }
+
+            bookingForm.classList.add("success");
+            const msg = bookingContainer.querySelector("#successMessage");
+            if (msg) msg.style.display = "block";
+
+            setTimeout(() => {
+              updateBookButtonStatus();
+              closeModal();
+            }, 1800);
+          });
+        });
+    });
+
+    function closeModal() {
+      overlay.classList.remove("active");
+      bookingContainer.classList.remove("active");
+      mainContent.classList.remove("blurred");
+      bookingContainer.innerHTML = '';
+    }
+
+    overlay.addEventListener("click", closeModal);
+
+    function updatePrices(currency) {
+      const prices = document.querySelectorAll(".price");
+      prices.forEach(priceEl => {
+        const baseUSD = parseFloat(priceEl.getAttribute("data-amount"));
+        const converted = (baseUSD * exchangeRates[currency]).toFixed(0);
+        priceEl.textContent = `${currencySymbols[currency]}${converted.toLocaleString()}`;
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedCurrency = localStorage.getItem("selectedCurrency") || "USD";
+      updatePrices(savedCurrency);
+    });
+  </script>
+
+</body>
+</html>

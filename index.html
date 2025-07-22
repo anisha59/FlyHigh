@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travel Agency</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    .currency-dropdown {
+      padding: 6px 10px;
+      font-weight: bold;
+      border-radius: 6px;
+      margin-right: 10px;
+    }
+  </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <header>
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+          <i class="fas fa-user" id="openAuthModal"></i>
+        </span>
+      </div>
+    </div>
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="tours.html">Tours</a></li>
+          <li><a href="vehicles.html">Vehicles</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="houses_villas.html">Houses & Villas</a></li>
+          <li><a href="rewards.html">Rewards</a></li>
+          <li><a href="travel-blog.html">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Let us take you to your Dream Destinations</h2>
+    <div class="filters">
+      <select id="continent">
+        <option value="All">All Continents</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Africa">Africa</option>
+      </select>
+      <select id="country">
+        <option value="All">All Countries</option>
+        <option value="India">India</option>
+        <option value="Japan">Japan</option>
+        <option value="Italy">Italy</option>
+        <option value="Spain">Spain</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <option value="Turkey">Turkey</option>
+      </select>
+      <select id="budget">
+        <option value="Your-Budget">Your Budget ($)</option>
+        <option value="1000">Under $1,000</option>
+        <option value="3000">Under $3,000</option>
+        <option value="5000">Under $5,000</option>
+      </select>
+      <button onclick="filterTours()">Find Your Tours</button>
+    </div>
+  </section>
+
+  <section class="best-offers">
+    <h2>Best Offers</h2>
+    <div class="offers-grid">
+      <div class="offer-card" data-continent="Asia" data-country="India" data-price="4500" onclick="bookIfLoggedIn('india.html')">
+        <img src="india.jpg" alt="India"><h3>India</h3><p class="price" data-amount="4500">$4,500</p>
+      </div>
+      <div class="offer-card" data-continent="Europe" data-country="Spain" data-price="2800" onclick="bookIfLoggedIn('spain.html')">
+        <img src="spain.jpg" alt="Spain"><h3>Spain</h3><p class="price" data-amount="2800">$2,800</p>
+      </div>
+      <div class="offer-card" data-continent="Asia" data-country="Turkey" data-price="2000" onclick="bookIfLoggedIn('turkey.html')">
+        <img src="turkey.jpg" alt="Turkey"><h3>Turkey</h3><p class="price" data-amount="2000">$2,000</p>
+      </div>
+      <div class="offer-card" data-continent="Europe" data-country="Italy" data-price="3500" onclick="bookIfLoggedIn('italy.html')">
+        <img src="italy.jpg" alt="Italy"><h3>Italy</h3><p class="price" data-amount="3500">$3,500</p>
+      </div>
+      <div class="offer-card" data-continent="Asia" data-country="Japan" data-price="4000" onclick="bookIfLoggedIn('japan.html')">
+        <img src="japan.jpg" alt="Japan"><h3>Japan</h3><p class="price" data-amount="4000">$4,000</p>
+      </div>
+      <div class="offer-card" data-continent="Europe" data-country="United Kingdom" data-price="5000" onclick="bookIfLoggedIn('uk.html')">
+        <img src="uk.jpg" alt="UK"><h3>United Kingdom</h3><p class="price" data-amount="5000">$5,000</p>
+      </div>
+    </div>
+
+    <div id="noToursMessage" style="text-align:center; display:none; margin-top: 20px; font-size: 1.2rem; color: #777;">
+      No tours found matching your criteria.
+    </div>
+  </section>
+  <section class="why-choose-us">
+  <h2>Why Choose Us?</h2>
+  <div class="reasons">
+    <div class="reason">
+      <h3>One-Stop Travel Solution</h3>
+      <p>Book tours, hotels, villas, and vehicles all in one place.</p>
+    </div>
+    <div class="reason">
+      <h3>Best Price Guarantee</h3>
+      <p>We offer competitive pricing with no hidden charges.</p>
+    </div>
+    <div class="reason">
+      <h3>Trusted by Thousands</h3>
+      <p>Our growing community of happy travelers speaks for itself.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>Testimonials</h2>
+  <h4>What our happy customers say</h4>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <p>“Loved the smooth booking process!”</p>
+      <p>- Rohan</p>
+    </div>
+    <div class="testimonial">
+      <p>“Clean villas and quick customer support.”</p>
+      <p>- Aisha</p>
+    </div>
+    <div class="testimonial">
+      <p>“Got the best deal on my tour package!”</p>
+      <p>- Kabir</p>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    function filterTours() {
+      const continent = document.getElementById("continent").value;
+      const country = document.getElementById("country").value;
+      const budget = document.getElementById("budget").value;
+
+      let budgetLimit = Infinity;
+      if (budget === "1000") budgetLimit = 1000;
+      else if (budget === "3000") budgetLimit = 3000;
+      else if (budget === "5000") budgetLimit = 5000;
+
+      const tourCards = document.querySelectorAll(".offer-card");
+      let matchCount = 0;
+
+      tourCards.forEach(card => {
+        const cardContinent = card.getAttribute("data-continent");
+        const cardCountry = card.getAttribute("data-country");
+        const cardPrice = parseInt(card.getAttribute("data-price"));
+
+        const matchContinent = continent === "All" || cardContinent === continent;
+        const matchCountry = country === "All" || cardCountry === country;
+        const matchBudget = budget === "Your-Budget" || cardPrice <= budgetLimit;
+
+        if (matchContinent && matchCountry && matchBudget) {
+          card.style.display = "block";
+          matchCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      const noToursMessage = document.getElementById("noToursMessage");
+      if (noToursMessage) {
+        noToursMessage.style.display = matchCount === 0 ? "block" : "none";
+      }
+    }
+
+    // ✅ Currency Conversion Script
+    const exchangeRates = {
+      USD: 1,
+      INR: 86.58,
+      EUR: 0.92
+    };
+
+    const currencySymbols = {
+      USD: "$",
+      INR: "₹",
+      EUR: "€"
+    };
+
+    function updatePrices(currency) {
+      const prices = document.querySelectorAll(".price");
+      prices.forEach(priceEl => {
+        const baseUSD = parseFloat(priceEl.getAttribute("data-amount"));
+        const converted = (baseUSD * exchangeRates[currency]).toFixed(0);
+        priceEl.textContent = `${currencySymbols[currency]}${converted.toLocaleString()}`;
+      });
+    }
+
+    document.querySelector(".currency-dropdown").addEventListener("change", (e) => {
+      const selectedCurrency = e.target.value;
+      localStorage.setItem("selectedCurrency", selectedCurrency);
+      updatePrices(selectedCurrency);
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedCurrency = localStorage.getItem("selectedCurrency") || "USD";
+      document.querySelector(".currency-dropdown").value = savedCurrency;
+      updatePrices(savedCurrency);
+    });
+  </script>
+
+  <div id="loginContainer"></div>
+  <div id="sidebarContainer"></div>
+<script src="jspdf.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script src="ticketDownload.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<div id="profileSidebar" class="sidebar glass-sidebar">
+  <div class="sidebar-header">
+    <i class="fas fa-user-circle"></i>
+    <h3><span id="usernameShort"></span></h3>
+  </div>
+  <ul class="sidebar-links">
+    <li>
+      <i class="fas fa-ticket-alt"></i>
+      <a href="#" id="viewAllBooked">Booked Tickets</a>
+    </li>
+    <li>
+      <i class="fas fa-ban"></i>
+      <a href="#" id="viewAllCancelled">Cancelled Tickets</a>
+    </li>
+    <li>
+      <i class="fas fa-sign-out-alt"></i>
+      <a href="#" id="logoutBtn">Logout</a>
+    </li>
+  </ul>
+</div>
+
+<div id="fullBookedModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3>All Booked Tours</h3>
+    <ul id="allBookedList"></ul>
+    <button id="closeFullBooked">Close</button>
+  </div>
+</div>
+
+<div id="fullCancelledModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3>All Cancelled Tours</h3>
+    <ul id="allCancelledList"></ul>
+    <button id="closeFullCancelled">Close</button>
+  </div>
+</div>
+
+<style>
+  .glass-sidebar {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 270px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 18px;
+    padding: 20px;
+    color: #fff;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+    display: none;
+    z-index: 1000;
+    animation: slideInRight 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .glass-sidebar.show { display: block; }
+  .sidebar-header { text-align: center; margin-bottom: 20px; }
+  .sidebar-header i {
+    font-size: 54px;
+    color: #ffffffdd;
+    filter: drop-shadow(0 0 6px #7fdfff);
+  }
+  .sidebar-header h3 {
+    margin-top: 10px;
+    font-size: 1.3em;
+    color: #e0f7ff;
+  }
+
+  .sidebar-links {
+    list-style: none;
+    padding: 0;
+  }
+  .sidebar-links li {
+    margin: 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sidebar-links li i {
+    width: 22px;
+    font-size: 16px;
+    color: #9fdfff;
+    transition: transform 0.3s ease;
+  }
+  .sidebar-links li a {
+    color: #dff6ff;
+    text-decoration: none;
+    font-size: 15.5px;
+    transition: all 0.25s ease;
+  }
+  .sidebar-links li:hover i { transform: scale(1.2); }
+  .sidebar-links li:hover a { color: #66d4ff; }
+
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-overlay.show { display: flex; }
+
+  .modal-content {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 14px;
+    max-width: 600px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    font-family: 'Segoe UI', sans-serif;
+    animation: popUpModal 0.3s ease;
+  }
+
+  @keyframes popUpModal {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-content h3 {
+    margin-bottom: 18px;
+    font-size: 23px;
+    color: #333;
+    text-align: center;
+  }
+
+  #allBookedList li,
+  #allCancelledList li {
+    width: 100%;
+    max-width: 580px;
+    background-color: #2c3e50;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    margin: 12px auto;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 13.8px;
+    position: relative;
+    flex-wrap: wrap;
+  }
+
+  .ticket-flex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* 🔥 Stretch children vertically */
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+  .ticket-left {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+ .ticket-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;   /* ✅ This centers vertically */
+  min-width: 50px;
+  padding: 0 10px;
+}
+.download-icon-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.download-icon-btn img {  /* ✅ This targets <img> properly */
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1); /* white color on dark bg */
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.download-icon-btn:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.3);
+}
+
+  .ticket-right {
+    flex-shrink: 0;
+    flex-grow: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .ticket-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    color: #fff;
+  }
+
+  .ticket-traveler,
+  .ticket-travelers-count,
+  .ticket-type,
+  .ticket-time {
+    font-size: 13.2px;
+    color: #ddd;
+    line-height: 1.3;
+  }
+
+  .ticket-date {
+    font-size: 12.5px;
+    color: #cfcfcf;
+  }
+
+  .ticket-duration {
+    font-size: 12px;
+    color: #ccc;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .cancel-btn {
+    padding: 6px 14px;
+    height: 36px;
+    white-space: nowrap;
+    background-color: #6e1c2d;
+    border: none;
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .cancel-btn:hover { background-color: #a52841; }
+
+  #closeFullBooked,
+  #closeFullCancelled {
+    margin-top: 20px;
+    padding: 10px 22px;
+    background-color: #3581de;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  #closeFullBooked:hover,
+  #closeFullCancelled:hover {
+    background-color: #75aae9;
+  }
+
+  #allBookedList,
+  #allCancelledList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  body.modal-open { overflow: hidden; }
+
+  .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: #f88;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .remove-btn:hover {
+    transform: scale(1.2);
+    color: #ff4e4e;
+  }
+  .custom-download-icon {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1); /* Makes SVG white on dark */
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.download-icon-btn:hover .custom-download-icon {
+  transform: scale(1.1);
+  filter: brightness(1.3);
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script>
+  initializeProfileSidebar(); // ✅ make sure it's initialized
+</script>
+
+<div id="pdfToast" style="
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #2ecc71;
+  color: white;
+  padding: 12px 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  display: none;
+  z-index: 99999;">
+  ✅ Ticket PDF downloaded
+</div>

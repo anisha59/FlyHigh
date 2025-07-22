@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tour Ticket</title>
+
+  <!-- PDF Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="ticketDownload.js" defer></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f3f3;
+      padding: 40px;
+    }
+
+    .ticket-box {
+      width: 720px;
+      background: #fff;
+      border: 2px dashed #444;
+      border-radius: 14px;
+      display: flex;
+      margin: 0 auto;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .barcode-strip {
+      width: 60px;
+      background: #f0f0f0;
+      border-right: 2px dashed #444;
+      writing-mode: vertical-lr;
+      font-weight: bold;
+      font-size: 15px;
+      letter-spacing: 4px;
+      color: #333;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ticket-content {
+      padding: 24px;
+      flex-grow: 1;
+    }
+
+    .ticket-content h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      color: #222;
+    }
+
+    .ticket-details p {
+      margin: 6px 0;
+      font-size: 15.5px;
+      color: #333;
+    }
+
+    .ticket-details span {
+      font-weight: 600;
+      color: #000;
+    }
+
+    .ticket-footer {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .plane-icon {
+      width: 48px;
+      opacity: 0.7;
+      margin-bottom: 10px;
+    }
+
+    .download-icon-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.3s ease;
+    }
+
+    .download-icon-btn:hover {
+      background: #0056b3;
+    }
+
+    #pdfToast {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #28a745;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ticket -->
+  <div id="ticket-1" class="ticket-box">
+    <div class="barcode-strip">TOUR</div>
+
+    <div class="ticket-content">
+      <h2>Boarding Pass: <strong>India Explorer</strong></h2>
+
+      <div class="ticket-details">
+        <p><span>Passenger:</span> Anisha Gajbhiye</p>
+        <p><span>Travelers:</span> 1</p>
+        <p><span>Destination:</span> India</p>
+        <p><span>Departure Date:</span> 13 Aug 2025</p>
+        <p><span>Price:</span> $4,500 (wallet)</p>
+        <p><span>Booked On:</span> 19 July 2025</p>
+      </div>
+
+      <div class="ticket-footer">
+        <img src="web-icon.png" alt="Plane Icon" class="plane-icon" />
+        <p>Thank you for booking with TravelVerse!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="ticketDownload.js" defer></script>
+
+
+</body>
+</html>

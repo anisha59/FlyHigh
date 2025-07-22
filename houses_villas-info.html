@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Villa Information</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 1000px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      overflow: hidden;
+    }
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .villa-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .info-content {
+      flex: 1;
+      min-width: 250px;
+    }
+    h1 { font-size: 28px; color: #333; margin-top: 10px; }
+    p { font-size: 18px; color: #666; margin-top: 10px; line-height: 1.6; }
+    .btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      background-color: #007BFF;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover { background-color: #0056b3; }
+    .book-now-btn {
+      background-color: #28a745;
+    }
+    .book-now-btn:hover {
+      background-color: #218838;
+    }
+    .details-wrapper {
+      transition: transform 0.6s ease, opacity 0.6s ease, max-height 0.6s ease;
+      transform: translateY(-100%);
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+    }
+    .details-wrapper.show {
+      transform: translateY(0);
+      opacity: 1;
+      max-height: 1000px;
+    }
+    .details-section {
+      background: #fff;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    ul { list-style-type: disc; margin-left: 20px; }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .overlay.active { display: block; }
+
+    .booking-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      max-width: 90%;
+      width: 400px;
+    }
+    .booking-popup.active { display: block; }
+
+    .blurred {
+      filter: blur(3px);
+      pointer-events: none;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container" id="mainContent">
+  <div class="main-content">
+    <img id="villa-image" class="villa-image" />
+    <div class="info-content">
+      <h1 id="villa-title">Villa Title</h1>
+      <p id="villa-description">Loading...</p>
+      <button class="btn" id="toggleDetailsBtn" onclick="toggleVillaDetails()">View Villa Details</button>
+      <button class="btn book-now-btn" id="bookBtn">Book Now</button>
+    </div>
+  </div>
+  <div id="details-container" class="details-wrapper">
+    <div class="details-section">
+      <h3>Villa Features</h3>
+      <p id="villa-features"></p>
+    </div>
+    <div class="details-section">
+      <h3>Nearby Amenities</h3>
+      <ul id="villa-amenities"></ul>
+    </div>
+  </div>
+</div>
+
+<div id="overlay" class="overlay"></div>
+<div id="bookingContainer" class="booking-popup"></div>
+<div id="sidebarContainer"></div>
+
+<script>
+const overlay = document.getElementById("overlay");
+const bookingContainer = document.getElementById("bookingContainer");
+const bookBtn = document.getElementById("bookBtn");
+const mainContent = document.getElementById("mainContent");
+
+let currentVilla = "";
+let villaPrice = 0;
+let currency = "USD";
+let symbol = "$";
+
+function titlesMatch(a, b) {
+  return a?.trim().toLowerCase() === b?.trim().toLowerCase();
+}
+
+function injectProfileSidebar() {
+  fetch("profileSidebar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("sidebarContainer").innerHTML = html;
+      const script = document.createElement("script");
+      script.src = "profileSidebar.js";
+      script.onload = () => initializeProfileSidebar();
+      document.body.appendChild(script);
+    });
+}
+
+function toggleVillaDetails() {
+  const details = document.getElementById("details-container");
+  const button = document.getElementById("toggleDetailsBtn");
+  const isShown = details.classList.contains("show");
+  if (isShown) {
+    details.classList.remove("show");
+    button.innerText = "View Villa Details";
+  } else {
+    details.classList.add("show");
+    button.innerText = "Hide Villa Details";
+    details.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function updateBookButtonStatus() {
+  const userEmail = localStorage.getItem("userEmail");
+  if (!userEmail) return;
+  const allTickets = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+  const userTickets = allTickets[userEmail] || [];
+
+  const cancelled = JSON.parse(localStorage.getItem("cancelledTickets") || "{}")[userEmail] || [];
+  const isCancelled = cancelled.some(c => titlesMatch(c.title, currentVilla) && c.type === "villa");
+  const isBooked = userTickets.some(b => titlesMatch(b.title, currentVilla) && b.type === "villa");
+
+  if (isBooked && !isCancelled) {
+    bookBtn.innerText = "Booked ✅";
+    bookBtn.disabled = true;
+    bookBtn.style.cursor = "not-allowed";
+    bookBtn.style.backgroundColor = "#28a745";
+  } else {
+    bookBtn.innerText = "Book Now";
+    bookBtn.disabled = false;
+    bookBtn.style.cursor = "pointer";
+    bookBtn.style.backgroundColor = "#28a745";
+  }
+}
+
+function bookNow() {
+  overlay.classList.add("active");
+  bookingContainer.classList.add("active");
+  mainContent.classList.add("blurred");
+
+  fetch("booking.html")
+    .then(res => res.text())
+    .then(html => {
+      bookingContainer.innerHTML = html;
+      bookingContainer.querySelector(".close-btn")?.addEventListener("click", closeModal);
+
+      const form = bookingContainer.querySelector("#bookingForm");
+      form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const travelerName = document.getElementById("travelerName").value;
+        const from = document.getElementById("from").value;
+        const date = document.getElementById("date").value;
+        const travelers = document.getElementById("travelers").value;
+        const payment = document.getElementById("payment").value;
+        const userEmail = localStorage.getItem("userEmail");
+        if (!userEmail) return;
+
+        const ticket = {
+          type: "villa",
+          title: currentVilla,
+          travelerName,
+          from,
+          date,
+          travelers,
+          paymentMethod: payment,
+          price: villaPrice,
+          currency: currency,
+          bookedAt: new Date().toLocaleDateString()
+        };
+
+        const allTickets = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+        const userTickets = allTickets[userEmail] || [];
+
+        if (!userTickets.some(b => titlesMatch(b.title, currentVilla) && b.type === "villa")) {
+          userTickets.push(ticket);
+          allTickets[userEmail] = userTickets;
+          localStorage.setItem("bookedTickets", JSON.stringify(allTickets));
+        }
+
+        form.classList.add("success");
+        bookingContainer.querySelector("#successMessage")?.style.setProperty("display", "block");
+
+        setTimeout(() => {
+          closeModal();
+          updateBookButtonStatus();
+        }, 1800);
+      });
+    });
+}
+
+function closeModal() {
+  overlay.classList.remove("active");
+  bookingContainer.classList.remove("active");
+  mainContent.classList.remove("blurred");
+  bookingContainer.innerHTML = "";
+}
+
+function cancelVillaBooking(title) {
+  const userEmail = localStorage.getItem("userEmail");
+  if (!userEmail) return;
+
+  const allBooked = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+  const userBooked = allBooked[userEmail] || [];
+  allBooked[userEmail] = userBooked.filter(t => !(t.title?.toLowerCase().trim() === title?.toLowerCase().trim() && t.type === "villa"));
+  localStorage.setItem("bookedTickets", JSON.stringify(allBooked));
+
+  const cancelled = JSON.parse(localStorage.getItem("cancelledTickets") || "{}");
+  const userCancelled = cancelled[userEmail] || [];
+  userCancelled.push({
+    type: "villa",
+    title,
+    cancelledAt: new Date().toISOString(),
+    reason: "No reason provided"
+  });
+  cancelled[userEmail] = userCancelled;
+  localStorage.setItem("cancelledTickets", JSON.stringify(cancelled));
+
+  fetch("profileSidebar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("sidebarContainer").innerHTML = html;
+      const script = document.createElement("script");
+      script.src = "profileSidebar.js";
+      script.onload = () => {
+        initializeProfileSidebar();
+        setTimeout(updateBookButtonStatus, 100); // ✅ Ensures DOM updated before button refresh
+      };
+      document.body.appendChild(script);
+    });
+
+  alert("Booking Cancelled.");
+}
+
+window.cancelVillaBooking = cancelVillaBooking;
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    alert("Please log in to view villa details.");
+    window.location.href = "houses_villas.html";
+    return;
+  }
+
+  const title = localStorage.getItem("villaTitle") || "Villa Title";
+  const description = localStorage.getItem("villaDescription") || "Luxury Villa";
+  const storedPrice = parseFloat(localStorage.getItem("villaPrice")) || 1200;
+  const baseCurrency = localStorage.getItem("villaCurrency") || "USD";
+  const image = localStorage.getItem("villaImage") || "images/villa-default.jpg";
+  const features = localStorage.getItem("villaFeatures") || "";
+  const amenities = JSON.parse(localStorage.getItem("villaAmenities") || "[]");
+
+  const currencyRates = { USD: 1, INR: 86.58, EUR: 0.92 };
+  const currencySymbols = { USD: "$", INR: "₹", EUR: "€" };
+
+  currency = localStorage.getItem("selectedCurrency") || "USD";
+  symbol = currencySymbols[currency];
+
+  const baseRate = currencyRates[baseCurrency] || 1;
+  const targetRate = currencyRates[currency] || 1;
+
+  villaPrice = Math.round(storedPrice / baseRate * targetRate);
+
+  document.getElementById("villa-title").innerText = title;
+  document.getElementById("villa-description").innerText =
+    `${description} - Starting at ${symbol}${villaPrice.toLocaleString()}/night`;
+  document.getElementById("villa-image").src = image;
+  document.getElementById("villa-features").innerText = features;
+
+  const ul = document.getElementById("villa-amenities");
+  ul.innerHTML = "";
+  amenities.forEach(a => {
+    const li = document.createElement("li");
+    li.innerText = a;
+    ul.appendChild(li);
+  });
+
+  currentVilla = title;
+  updateBookButtonStatus();
+  injectProfileSidebar();
+  bookBtn.addEventListener("click", bookNow);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Houses & Villas - Travel Agency</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .star-rating {
+      font-size: 16px;
+      color: gold;
+      margin: 5px 0;
+    }
+    .map-link {
+      display: inline-block;
+      margin: 5px 0;
+      font-size: 14px;
+      color: deepskyblue;
+      text-decoration: none;
+    }
+    .map-link:hover {
+      text-decoration: underline;
+    }
+    @keyframes slideDownFade {
+      0% { opacity: 0; transform: translateX(50%) translateY(-15px); }
+      100% { opacity: 1; transform: translateX(50%) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+  <i class="fas fa-user" id="openAuthModal"></i>
+</span>
+
+      </div>
+    </div>
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tours.html">Tours</a></li>
+          <li><a href="vehicles.html">Vehicles</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="houses_villas.html" class="active">Houses & Villas</a></li>
+          <li><a href="rewards.html">Rewards</a></li>
+          <li><a href="travel-blog.html">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Find Your Perfect Stay</h2>
+    <div class="filters">
+      <select id="villaContinent">
+        <option value="All">All Continents</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Africa">Africa</option>
+        <option value="Antarctica">Antarctica</option>
+        <option value="Australia">Australia</option>
+      </select>
+      <select id="villaCountry">
+        <option value="All">All Countries</option>
+        <option value="Bali">Bali</option>
+        <option value="Europe">Europe</option>
+        <option value="Dubai">Dubai</option>
+        <option value="Maldives">Maldives</option>
+        <option value="Africa">Africa</option>
+        <option value="Antarctica">Antarctica</option>
+        <option value="Thailand">Thailand</option>
+        <option value="New Zealand">New Zealand</option>
+      </select>
+      <select id="villaBudget">
+        <option value="Your-Budget">Your Budget ($)</option>
+        <option value="100">Under $100</option>
+        <option value="500">Under $500</option>
+        <option value="1000">Luxury ($500+)</option>
+      </select>
+      <button onclick="filterVillas()">Search Villas</button>
+    </div>
+  </section>
+
+  <section class="hotel-packages">
+    <h2>Available Villas</h2>
+    <div class="offers-grid">
+      <!-- Each .offer-card below should include data-continent, data-country, data-price -->
+      <!-- Example shown below -->
+      <div class="offer-card" data-continent="Asia" data-country="India" data-price="499">
+  <img src="bali_villa.jpg" alt="Bali Beachfront Villa">
+  <h3>Bali Beachfront Villa</h3>
+  <p class="star-rating">★★★★½</p>
+  <p>3 Bedrooms | Private Pool | Starting at $499/night</p>
+  <a href="https://www.google.com/maps?q=Bali+Beachfront+Villa" class="map-link" target="_blank">📍 View on Map</a>
+  
+  <a href="#" class="btn-link"
+     onclick="goToVillaInfo(
+  'Bali Beachfront Villa',
+  'Traditional Balinese-style villa just steps from the beach.',
+  'bali_villa.jpg',
+  '3 Bedrooms, Private Pool, Open Living Area, Sea View',
+  ['Seminyak Beach (0.2 km)', 'Local Spa (0.5 km)', 'Night Market (1 km)'],
+  4.5,
+  { lat: -8.6903, lng: 115.1682 },
+  499
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+<div class="offer-card" data-continent="Europe" data-country="France" data-price="799">
+  <img src="france_chateau.jpg" alt="French Countryside Château">
+  <h3>French Countryside Château</h3>
+  <p class="star-rating">★★★★☆</p>
+  <p>5 Bedrooms | Wine Cellar | Starting at $799/night</p>
+  <a href="https://www.google.com/maps?q=French+Countryside+Chateau" class="map-link" target="_blank">📍 View on Map</a>
+  <a href="#" class="btn-link"
+     onclick="goToVillaInfo(
+  'French Countryside Château',
+  'Historic château with lush gardens and private vineyard.',
+  'france_chateau.jpg',
+  '5 Bedrooms, Wine Cellar, Grand Dining Room, Fireplace',
+  ['Vineyard Walk (0.3 km)', 'Cheese Market (0.8 km)', 'Castle Ruins (2 km)'],
+  4.0,
+  { lat: 44.8378, lng: -0.5792 },
+  799
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+
+<div class="offer-card" data-continent="Europe" data-country="Greece" data-price="699">
+  <img src="greece_villa.jpg" alt="Santorini Cliffside Villa">
+  <h3>Santorini Cliffside Villa</h3>
+  <p class="star-rating">★★★★½</p>
+  <p>4 Bedrooms | Infinity Pool | Starting at $699/night</p>
+  <a href="https://www.google.com/maps?q=Santorini+Cliffside+Villa" class="map-link" target="_blank">📍 View on Map</a>
+  <a href="#" class="btn-link"
+     onclick="goToVillaInfo(
+  'Santorini Cliffside Villa',
+  'Iconic whitewashed villa with infinity pool and sunset views.',
+  'greece_villa.jpg',
+  '4 Bedrooms, Infinity Pool, Rooftop Lounge, Caldera View',
+  ['Oia Sunset Spot (0.5 km)', 'Boutique Shops (0.4 km)', 'Seaside Café (1 km)'],
+  4.8,
+  { lat: 36.4610, lng: 25.3750 },
+  699
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+
+<div class="offer-card" data-continent="Europe" data-country="Italy" data-price="899">
+  <img src="italy_estate.jpg" alt="Tuscan Country Estate">
+  <h3>Tuscan Country Estate</h3>
+  <p class="star-rating">★★★½☆</p>
+  <p>6 Bedrooms | Vineyard Access | Starting at $899/night</p>
+  <a href="https://www.google.com/maps?q=Tuscan+Country+Estate" class="map-link" target="_blank">📍 View on Map</a>
+  <a href="#" class="btn-link"
+    onclick="goToVillaInfo(
+  'Tuscan Country Estate',
+  'Elegant stone estate surrounded by rolling vineyards.',
+  'italy_estate.jpg',
+  '6 Bedrooms, Fireplace, Vineyard Access, Terrace View',
+  ['Wine Cellar Tour (0.2 km)', 'Olive Grove Trail (0.7 km)', 'Village Café (1.5 km)'],
+  3.5,
+  { lat: 43.7711, lng: 11.2486 },
+  899
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+
+<div class="offer-card" data-continent="Asia" data-country="Maldives" data-price="999">
+  <img src="maldives_villa.jpg" alt="Maldives Overwater Retreat">
+  <h3>Maldives Overwater Retreat</h3>
+  <p class="star-rating">★★★★☆</p>
+  <p>2 Bedrooms | Ocean View | Starting at $999/night</p>
+  <a href="https://www.google.com/maps?q=Maldives+Overwater+Retreat" class="map-link" target="_blank">📍 View on Map</a>
+  <a href="#" class="btn-link"
+    onclick="goToVillaInfo(
+  'Maldives Overwater Retreat',
+  'Overwater bungalow with glass floors and lagoon views.',
+  'maldives_villa.jpg',
+  '2 Bedrooms, Glass Floor, Ocean Deck, Butler Service',
+  ['Snorkeling Point (20 m)', 'Floating Bar (0.1 km)', 'Spa Pavilion (0.3 km)'],
+  4.0,
+  { lat: 3.2028, lng: 73.2207 },
+  999
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+
+<div class="offer-card" data-continent="Europe" data-country="Switzerland" data-price="599">
+  <img src="swiss_cabin.jpg" alt="Swiss Mountain Cabin">
+  <h3>Swiss Mountain Cabin</h3>
+  <p class="star-rating">★★★★½</p>
+  <p>3 Bedrooms | Fireplace | Starting at $599/night</p>
+  <a href="https://www.google.com/maps?q=Swiss+Mountain+Cabin" class="map-link" target="_blank">📍 View on Map</a>
+  <a href="#" class="btn-link"
+    onclick="goToVillaInfo(
+  'Swiss Mountain Cabin',
+  'Cozy wooden cabin nestled in the snowy Alps.',
+  'swiss_cabin.jpg',
+  '3 Bedrooms, Fireplace, Snow View Deck, Ski Storage',
+  ['Ski Lift (0.4 km)', 'Alpine Bakery (0.6 km)', 'Cable Car (1.2 km)'],
+  4.8,
+  { lat: 46.8182, lng: 8.2275 },
+  599
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+      <!-- Add other villas similarly with appropriate data-* attributes -->
+    </div>
+    <div id="noVillasMessage" style="text-align:center; display:none; margin-top: 20px; font-size: 1.2rem; color: #777;">
+      No villas found matching your criteria.
+    </div>
+  </section>
+  <section class="why-choose-us">
+  <h2>Why Choose Us?</h2>
+  <div class="reasons">
+    <div class="reason">
+      <h3>Handpicked Properties</h3>
+      <p>Every home is carefully selected for comfort, safety, and charm.</p>
+    </div>
+    <div class="reason">
+      <h3>Flexible Booking</h3>
+      <p>Choose dates that work for you with instant confirmations.</p>
+    </div>
+    <div class="reason">
+      <h3>Comfort Like Home</h3>
+      <p>Fully furnished villas with all the amenities you need.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>Testimonials</h2>
+  <h4>Here's what guests say about our houses & villas</h4>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <p>"Our weekend at the hillside villa was peaceful and relaxing!"</p>
+      <p>- Priya Sharma</p>
+    </div>
+    <div class="testimonial">
+      <p>"The oceanfront house was exactly like the pictures – just perfect."</p>
+      <p>- David Miller</p>
+    </div>
+    <div class="testimonial">
+      <p>"Such a cozy stay! Will definitely book again for our family trip."</p>
+      <p>- Neha Kulkarni</p>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+
+ 
+  <div id="loginContainer"></div>
+  <div id="sidebarContainer"></div>
+<script src="jspdf.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script src="ticketDownload.js"></script>
+
+  <script>
+    // Login Modal Loader
+    fetch("./login.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("loginContainer").innerHTML = data;
+      });
+
+    function goToVillaInfo(title, description, image, features, amenities, rating, mapLocation, price) {
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  if (!isLoggedIn) {
+    const userIcon = document.getElementById("openAuthModal");
+    if (userIcon) userIcon.click();
+    return;
+  }
+
+  localStorage.setItem('villaTitle', title);
+  localStorage.setItem('villaDescription', description);
+  localStorage.setItem('villaImage', image);
+  localStorage.setItem('villaFeatures', features);
+  localStorage.setItem('villaAmenities', JSON.stringify(amenities));
+  localStorage.setItem('villaRating', rating);
+  localStorage.setItem('villaLat', mapLocation.lat);
+  localStorage.setItem('villaLng', mapLocation.lng);
+  localStorage.setItem('villaPrice', price); // ✅ New line to store price
+
+  window.location.href = 'houses_villas-info.html';
+}
+
+    function filterVillas() {
+      const continent = document.getElementById("villaContinent").value;
+      const country = document.getElementById("villaCountry").value;
+      const budget = document.getElementById("villaBudget").value;
+
+      let budgetLimit = Infinity;
+      if (budget === "100") budgetLimit = 100;
+      else if (budget === "500") budgetLimit = 500;
+      else if (budget === "1000") budgetLimit = Infinity;
+
+      const villaCards = document.querySelectorAll(".offers-grid .offer-card");
+      let matches = 0;
+
+      villaCards.forEach(card => {
+        const cardContinent = card.getAttribute("data-continent");
+        const cardCountry = card.getAttribute("data-country");
+        const cardPrice = parseInt(card.getAttribute("data-price"), 10);
+
+        const continentMatch = continent === "All" || cardContinent === continent;
+        const countryMatch = country === "All" || cardCountry === country;
+        const budgetMatch = cardPrice <= budgetLimit;
+
+        if (continentMatch && countryMatch && budgetMatch) {
+          card.style.display = "block";
+          matches++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      document.getElementById("noVillasMessage").style.display = matches === 0 ? "block" : "none";
+    }
+
+    // -------- Currency Conversion Logic --------
+    const currencyRates = {
+      USD: 1,
+      INR: 86.58,     
+      EUR: 0.92    // 1 USD = 0.92 EUR
+    };
+
+    const currencySymbols = {
+      USD: "$",
+      INR: "₹",
+      EUR: "€"
+    };
+
+    let currentCurrency = localStorage.getItem("selectedCurrency") || "USD";
+    document.querySelector(".currency-dropdown").value = currentCurrency;
+
+    document.querySelector(".currency-dropdown").addEventListener("change", () => {
+      currentCurrency = document.querySelector(".currency-dropdown").value;
+      localStorage.setItem("selectedCurrency", currentCurrency);
+      convertVillaPrices();
+    });
+
+    function convertVillaPrices() {
+      const cards = document.querySelectorAll(".offer-card");
+
+      cards.forEach(card => {
+        const priceText = card.querySelector("p:nth-of-type(2)");
+        const basePriceUSD = parseInt(card.getAttribute("data-price")); // in USD
+        const convertedPrice = basePriceUSD * currencyRates[currentCurrency];
+        const formattedPrice = convertedPrice.toLocaleString(undefined, {
+          style: "currency",
+          currency: currentCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        });
+
+        const roomInfo = priceText.textContent.split("|")[0].trim();
+        priceText.textContent = `${roomInfo} | Starting at ${formattedPrice}/night`;
+      });
+    }
+
+    // Run on load
+    convertVillaPrices();
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

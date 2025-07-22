@@ -1,0 +1,100 @@
+<!-- Travel Blog Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Blog - Travel Agency</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <!-- Title Section -->
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+  <i class="fas fa-user" id="openAuthModal"></i>
+</span>
+
+      </div>
+    </div>
+
+    <!-- Navbar Section -->
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tours.html">Tours</a></li>
+          <li><a href="vehicles.html">Vehicles</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="houses-villas.html">Houses & Villas</a></li>
+          <li><a href="rewards.html">Rewards</a></li>
+          <li><a href="travel-blog.html" class="active">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Welcome to Our Travel Blog</h2>
+    <p>Discover tips, stories, and inspiration for your next journey.</p>
+  </section>
+
+  <!-- Blog Posts Section -->
+  <section class="blog-posts">
+    <h2>Latest Posts</h2>
+    <div class="blog-grid">
+  <div class="blog-card">
+    <img src="blog1.jpg" alt="Destination Tips" />
+    <h3>Top 10 Destinations for 2025</h3>
+    <p>Explore the most popular travel destinations for the upcoming year.</p>
+    <a href="blog1.html" target="_blank">
+      <button>Read More</button>
+    </a>
+  </div>
+  <div class="blog-card">
+    <img src="blog2.jpg" alt="Travel Tips" />
+    <h3>Travel Hacks for a Smooth Journey</h3>
+    <p>Learn tips and tricks to make your travels hassle-free and enjoyable.</p>
+    <a href="blog2.html" target="_blank">
+      <button>Read More</button>
+    </a>
+  </div>
+  <!-- Add similar blocks for blog3 and blog4 -->
+    <div class="blog-card">
+        <img src="blog3.jpg" alt="Cultural Exploration">
+        <h3>Immersive Cultural Experiences</h3>
+        <p>Discover ways to truly connect with local cultures while traveling.</p>
+         <a href="blog3.html" target="_blank">
+      <button>Read More</button>
+    </a>
+      </div>
+      <div class="blog-card">
+        <img src="blog4.jpg" alt="Adventure Travel">
+        <h3>Adventurous Escapes</h3>
+        <p>Find the best adventure travel experiences around the globe.</p>
+         <a href="blog4.html" target="_blank">
+      <button>Read More</button>
+    </a>
+      </div>
+</div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+<div id="loginContainer"></div>
+<div id="sidebarContainer"></div>
+<script src="auth.js"></script>
+
+</body>
+</html>

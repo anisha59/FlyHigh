@@ -1,0 +1,140 @@
+<!-- booking.html -->
+<style>
+  * { box-sizing: border-box; }
+
+  .booking-container {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.4s ease;
+    position: relative;
+  }
+
+  @keyframes fadeInUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  .booking-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #333;
+  }
+
+  .booking-container .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 22px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+  }
+
+  .booking-container .close-btn:hover { color: #000; }
+
+  .booking-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .booking-form input,
+  .booking-form select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    margin-bottom: 18px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+  }
+
+  .booking-form input:focus,
+  .booking-form select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px #cce4ff;
+  }
+
+  .booking-form button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .booking-form button:hover { background: #0056b3; }
+
+  @media (max-width: 500px) {
+    .booking-container { padding: 20px; border-radius: 12px; }
+    .booking-container h2 { font-size: 20px; }
+    .booking-form input, .booking-form select { font-size: 14px; }
+    .booking-form button { font-size: 15px; }
+  }
+
+  .success-message {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #28a745;
+  }
+
+  .booking-form.success { display: none; }
+</style>
+
+<div class="booking-container">
+  <button class="close-btn" title="Close">&times;</button>
+  <h2>Complete Your Booking</h2>
+
+  <form class="booking-form" id="bookingForm">
+    <div>
+    <label for="name">Traveler Name</label>
+    <input type="text" id="travelerName" placeholder="E.g., Ria Gupta" required />
+  </div>
+    <div>
+      <label for="from">From (Departure City)</label>
+      <input type="text" id="from" placeholder="E.g., Mumbai" required />
+    </div>
+    <div>
+      <label for="date">Date of Departure</label>
+      <input type="date" id="date" required />
+    </div>
+    <div>
+      <label for="travelers">Number of Travelers</label>
+      <input type="number" id="travelers" min="1" value="1" required />
+    </div>
+    <div>
+      <label for="payment">Payment Method</label>
+      <select id="payment" required>
+        <option value="" disabled selected>Select</option>
+        <option value="card">Credit/Debit Card</option>
+        <option value="upi">UPI</option>
+        <option value="netbanking">Net Banking</option>
+        <option value="wallet">Digital Wallet</option>
+      </select>
+    </div>
+    <button type="submit">Book Now</button>
+  </form>
+
+  <div class="success-message" id="successMessage">🎉 Booking Confirmed! See you soon.</div>
+</div>
+

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rewards - Travel Agency</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+
+/* Card styles */
+.reward-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Hover animation */
+.reward-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card image */
+.reward-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Center and style reward detail */
+.reward-detail {
+  display: none;
+  padding: 20px;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Detail image styling */
+.reward-detail img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Back button */
+.btn-back {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+  <i class="fas fa-user" id="openAuthModal"></i>
+</span>
+
+      </div>
+    </div>
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tours.html">Tours</a></li>
+          <li><a href="vehicles.html">Vehicles</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="houses-villas.html">Houses & Villas</a></li>
+          <li><a href="rewards.html" class="active">Rewards</a></li>
+          <li><a href="travel-blog.html">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Unlock Exclusive Rewards!</h2>
+    <p>Join our loyalty program and enjoy exclusive benefits on your travels.</p>
+    <button>Join Now</button>
+  </section>
+
+  <section id="rewards-grid">
+    <h2 style="text-align:center;">Your Rewards</h2>
+    <div class="rewards-grid">
+      <div class="reward-card" onclick="viewReward('Free Trips', 'Accumulate points to earn free trips to your favorite destinations.', 'free_trip.jpg', 'You need 1000 points to unlock a free trip. Valid for any destination listed under our tours. Travel must be booked within 6 months of redemption.', '1000 Points')">
+        <img src="free_trip.jpg" alt="Free Trip">
+        <h3>Free Trips</h3>
+        <p>Accumulate points to earn free trips to your favorite destinations.</p>
+      </div>
+      <div class="reward-card" onclick="viewReward('Exclusive Discounts', 'Get up to 50% off on select tours and packages.', 'discount.webp', 'Discounts apply only to select packages. Cannot be combined with other offers. Offer expires 30 days after claim.', '500 Points')">
+        <img src="discount.webp" alt="Discount">
+        <h3>Exclusive Discounts</h3>
+        <p>Get up to 50% off on select tours and packages.</p>
+      </div>
+      <div class="reward-card" onclick="viewReward('VIP Access', 'Enjoy priority booking and special privileges.', 'vip.jpg', 'Includes early access to booking windows, VIP lounges, and concierge support. Valid for 1 year after activation.', '750 Points')">
+        <img src="vip.jpg" alt="VIP Access">
+        <h3>VIP Access</h3>
+        <p>Enjoy priority booking and special privileges.</p>
+      </div>
+      <div class="reward-card" onclick="viewReward('Cashback Offers', 'Earn cashback on every booking and redeem it for future trips.', 'cashback.png', 'Cashback will be credited to your wallet and can be used for any future booking. Minimum cashback redemption is $25.', '300 Points')">
+        <img src="cashback.png" alt="Cashback">
+        <h3>Cashback Offers</h3>
+        <p>Earn cashback on every booking and redeem it for future trips.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="reward-detail" class="reward-detail">
+    <h2 id="reward-title"></h2>
+    <img id="reward-image" src="" alt="Reward Image">
+    <p id="reward-description"></p>
+    <h4>Points Required</h4>
+    <p id="reward-points"></p>
+    <h4>Terms & Conditions</h4>
+    <p id="reward-terms"></p>
+    <button class="btn-back" onclick="backToRewards()">← Back to Rewards</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+  <div id="loginContainer"></div>
+<div id="sidebarContainer"></div>
+<script src="auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+/* Hero Section Styles */
+.hero-section {
+  height: 500px; /* You can adjust the height based on your design */
+  background-size: cover; /* Ensures the image covers the section area */
+  position: relative; /* To position the shadow overlay */
+}
+
+.hero-content {
+  position: absolute; /* Positioning content inside the hero section */
+  top: 50%; /* Vertically center content */
+  left: 50%; /* Horizontally center content */
+  transform: translate(-50%, -50%); /* Adjust centering */
+  color: white;
+  text-align: center;
+  z-index: 2; /* Keep text above the shadow */
+}
+
+.hero-content h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.5em;
+}
+
+/* Shadow overlay for background image */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Shadow effect */
+  z-index: 1; /* Ensures shadow is below the text */
+}
+
+
+/* Tour info cards */
+.tour-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.info-card {
+  background: #f0f0f0;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.info-card h2 {
+  color: #0077cc;
+  margin-bottom: 0.5rem;
+}
+
+.info-card p {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Description and other sections */
+.description,
+.highlights,
+.itinerary,
+.why-us,
+.cta {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #fff;
+  margin-top: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.description img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.description p,
+.why-us p,
+.cta p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.highlights h2,
+.itinerary h2,
+.why-us h2,
+.cta h2 {
+  color: #e67e22;
+  margin-bottom: 1rem;
+}
+
+.highlights ul,
+.itinerary ol {
+  text-align: left;
+  margin-top: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* CTA button */
+.book-now-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: #0077cc;
+  color: #fff;
+  padding: 0.75rem 2rem;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.book-now-btn:hover {
+  background-color: #005fa3;
+}
+/* ========== Booking Overlay & Modal ========== */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+.overlay.active {
+  display: block;
+}
+
+.booking-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  z-index: 1000;
+  max-width: 90%;
+  width: 400px;
+}
+.booking-popup.active {
+  display: block;
+}
+
+/* ========== Booking Form Inputs ========== */
+.booking-popup form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.booking-popup label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+  user-select: none;
+}
+
+.booking-popup input,
+.booking-popup textarea,
+.booking-popup select {
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1.8px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  resize: vertical;
+}
+
+.booking-popup input:focus,
+.booking-popup textarea:focus,
+.booking-popup select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 6px #007bff;
+}
+
+/* ========== Booking Submit Button ========== */
+.booking-popup button.submit-btn {
+  background-color: #007bff;
+  color: white;
+  font-weight: 700;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+.booking-popup button.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* ========== Close Button ========== */
+.booking-popup .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #666;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.booking-popup .close-btn:hover {
+  color: #000;
+}
+
+/* ========== Success Message ========== */
+.success-message {
+  display: none;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #28a745;
+}
+
+/* ========== Blur on Modal Open ========== */
+.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+

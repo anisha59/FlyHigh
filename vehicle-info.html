@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vehicle Information</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 1000px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      overflow: hidden;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .vehicle-image {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 10px;
+      flex-shrink: 0;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .info-content {
+      flex: 1;
+      min-width: 250px;
+    }
+    h1 { font-size: 28px; color: #333; margin-top: 15px; }
+    p { font-size: 18px; color: #666; margin-top: 10px; line-height: 1.6; }
+    .details-wrapper {
+      transition: transform 0.6s ease, opacity 0.6s ease, max-height 0.6s ease;
+      transform: translateX(100%);
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+    }
+    .details-wrapper.show {
+      transform: translateX(0);
+      opacity: 1;
+      max-height: 1000px;
+    }
+    .details-section {
+      background-color: #fff;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+    h3 { font-size: 22px; color: #333; margin-bottom: 10px; }
+    ul { list-style-type: disc; margin-left: 20px; color: #444; }
+    .btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #007BFF;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .btn:hover { background-color: #0056b3; }
+    .book-now-btn {
+      background-color: #28a745;
+      margin-top: 15px;
+    }
+    .book-now-btn:hover { background-color: #218838; }
+    .blurred {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .overlay.active { display: block; }
+    .booking-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      max-width: 90%;
+      width: 400px;
+    }
+    .booking-popup.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainContent">
+    <div class="main-content">
+      <img id="vehicle-img" src="" alt="Vehicle" class="vehicle-image" />
+      <div class="info-content">
+        <h1 id="vehicle-title">Vehicle Name</h1>
+        <p id="vehicle-price">Starting at $/day</p>
+        <button class="btn" onclick="toggleVehicleDetails()">View Vehicle Details</button>
+        <button class="btn book-now-btn" id="openBookingBtn">Book Now</button>
+        <div id="details-container" class="details-wrapper">
+          <div class="details-section">
+            <h3>Features</h3>
+            <ul id="vehicle-features"></ul>
+          </div>
+          <div class="details-section">
+            <h3>Description</h3>
+            <p id="vehicle-description"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="overlay" class="overlay"></div>
+  <div id="bookingContainer" class="booking-popup"></div>
+  <div id="sidebarContainer"></div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const bookingContainer = document.getElementById("bookingContainer");
+    const mainContent = document.getElementById("mainContent");
+    const bookNowBtn = document.getElementById("openBookingBtn");
+    let currentVehicle = "";
+    let vehiclePrice = 0;
+    let currency = "USD";
+    let symbol = "$";
+
+    const vehicleData = {
+      "compact-car": {
+        title: "Compact Car",
+        price: 50,
+        image: "car.jpg",
+        features: ["Fuel efficient", "Easy to park", "Great for city travel"],
+        description: "Perfect for quick city rides and solo travel. Compact yet comfortable, this car is highly fuel efficient."
+      },
+      "spacious-suv": {
+        title: "Spacious SUV",
+        price: 80,
+        image: "space car.jpg",
+        features: ["Large seating capacity", "Off-road ready", "Comfortable ride"],
+        description: "This SUV offers plenty of room for passengers and luggage. Ideal for family trips and rough terrain."
+      },
+      "family-van": {
+        title: "Family Van",
+        price: 120,
+        image: "van.jpg",
+        features: ["Roomy interior", "Perfect for groups", "Sliding doors"],
+        description: "Spacious and secure, this van is tailored for family vacations, school outings, or small tour groups."
+      },
+      "luxury-car": {
+        title: "Luxury Car",
+        price: 200,
+        image: "lux.jpg",
+        features: ["Premium interior", "Smooth drive", "Brand prestige"],
+        description: "Experience top-tier luxury and elegance with our premium cars—perfect for business or celebration."
+      },
+      "tour-bus": {
+        title: "Tour Bus",
+        price: 400,
+        image: "bus.jpg",
+        features: ["Seats up to 40", "AC & Audio system", "Ideal for tours"],
+        description: "Designed for large groups and tour operators, this bus is equipped with comfort and entertainment."
+      }
+    };
+
+    function injectProfileSidebar() {
+      fetch("profileSidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("sidebarContainer").innerHTML = html;
+          const script = document.createElement("script");
+          script.src = "profileSidebar.js";
+          script.onload = () => initializeProfileSidebar();
+          document.body.appendChild(script);
+        });
+    }
+
+    function toggleVehicleDetails() {
+      const details = document.getElementById("details-container");
+      const button = document.querySelector(".btn");
+      const isShown = details.classList.contains("show");
+      if (isShown) {
+        details.classList.remove("show");
+        button.innerText = "View Vehicle Details";
+      } else {
+        details.classList.add("show");
+        button.innerText = "Hide Vehicle Details";
+        details.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function updateBookButtonStatus() {
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) return;
+
+      const allTickets = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+      const bookings = allTickets[userEmail] || [];
+
+      const isBooked = bookings.some(b => b.title === currentVehicle && b.type === "vehicle");
+      if (isBooked) {
+        bookNowBtn.innerText = "Booked ✅";
+        bookNowBtn.disabled = true;
+        bookNowBtn.style.backgroundColor = "#28a745";
+        bookNowBtn.style.cursor = "not-allowed";
+      } else {
+        bookNowBtn.innerText = "Book Now";
+        bookNowBtn.disabled = false;
+        bookNowBtn.style.backgroundColor = "#28a745";
+        bookNowBtn.style.cursor = "pointer";
+      }
+    }
+
+    function bookNow() {
+      if (localStorage.getItem("isLoggedIn") !== "true") {
+        alert("Please log in to book this vehicle.");
+        return;
+      }
+
+      overlay.classList.add("active");
+      bookingContainer.classList.add("active");
+      mainContent.classList.add("blurred");
+
+      fetch("booking.html")
+        .then(res => res.text())
+        .then(html => {
+          bookingContainer.innerHTML = html;
+          bookingContainer.querySelector(".close-btn")?.addEventListener("click", closeModal);
+
+          const bookingForm = bookingContainer.querySelector("#bookingForm");
+          bookingForm?.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const travelerName = document.getElementById("travelerName").value;
+            const from = document.getElementById("from").value;
+            const date = document.getElementById("date").value;
+            const travelers = document.getElementById("travelers").value;
+            const payment = document.getElementById("payment").value;
+            const userEmail = localStorage.getItem("userEmail");
+
+            const ticket = {
+              title: currentVehicle,
+              travelerName,
+              from,
+              date,
+              travelers,
+              paymentMethod: payment,
+              price: parseFloat(vehiclePrice),
+              currency: currency,
+              bookedAt: new Date().toLocaleDateString(),
+              type: "vehicle"
+            };
+
+            const allTickets = JSON.parse(localStorage.getItem("bookedTickets") || "{}");
+            const userTickets = allTickets[userEmail] || [];
+
+            if (!userTickets.some(b => b.title === currentVehicle && b.type === "vehicle")) {
+              userTickets.push(ticket);
+              allTickets[userEmail] = userTickets;
+              localStorage.setItem("bookedTickets", JSON.stringify(allTickets));
+            }
+
+            bookingForm.classList.add("success");
+            bookingContainer.querySelector("#successMessage")?.style.setProperty("display", "block");
+
+            setTimeout(() => {
+              updateBookButtonStatus();
+              closeModal();
+            }, 1800);
+          });
+        });
+    }
+
+    function closeModal() {
+      overlay.classList.remove("active");
+      bookingContainer.classList.remove("active");
+      mainContent.classList.remove("blurred");
+      bookingContainer.innerHTML = "";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const vehicleKey = params.get("vehicle");
+      const data = vehicleData[vehicleKey];
+
+      if (!data) return;
+
+      const currencyRates = { USD: 1, INR: 86.58, EUR: 0.92 };
+      const currencySymbols = { USD: "$", INR: "₹", EUR: "€" };
+      currency = localStorage.getItem("selectedCurrency") || "USD";
+      const rate = currencyRates[currency];
+      symbol = currencySymbols[currency];
+      vehiclePrice = (data.price * rate).toFixed(0);
+
+      document.getElementById("vehicle-title").innerText = data.title;
+      document.getElementById("vehicle-price").innerText = `Starting at ${symbol}${Number(vehiclePrice).toLocaleString()}/day`;
+      document.getElementById("vehicle-img").src = data.image;
+      document.getElementById("vehicle-description").innerText = data.description;
+
+      const featuresList = document.getElementById("vehicle-features");
+      featuresList.innerHTML = "";
+      data.features.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        featuresList.appendChild(li);
+      });
+
+      currentVehicle = data.title;
+      updateBookButtonStatus();
+      injectProfileSidebar();
+      document.getElementById("openBookingBtn").addEventListener("click", bookNow);
+    });
+
+    overlay.addEventListener("click", closeModal);
+  </script>
+</body>
+</html>

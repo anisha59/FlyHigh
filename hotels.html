@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotels - Travel Agency</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD" selected>USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+          <i class="fas fa-user" id="openAuthModal"></i>
+        </span>
+      </div>
+    </div>
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tours.html">Tours</a></li>
+          <li><a href="vehicles.html">Vehicles</a></li>
+          <li><a href="hotels.html" class="active">Hotels</a></li>
+          <li><a href="houses_villas.html">Houses & Villas</a></li>
+          <li><a href="rewards.html">Rewards</a></li>
+          <li><a href="travel-blog.html">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Find Your Perfect Stay</h2>
+    <div class="filters">
+      <select id="hotelContinent">
+        <option value="All">All Continents</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Africa">Africa</option>
+        <option value="Antarctica">Antarctica</option>
+        <option value="Australia">Australia</option>
+      </select>
+      <select id="hotelCountry">
+  <option value="All">All Countries</option>
+  <option value="India">India</option>
+  <option value="Japan">Japan</option>
+  <option value="Italy">Italy</option>
+  <option value="Spain">Spain</option>
+  <option value="United Kingdom">United Kingdom</option>
+  <option value="Turkey">Turkey</option>
+</select>
+
+      <select id="hotelBudget">
+        <option value="Your-Budget" selected>Filter by Budget</option>
+        <option value="100">Under $100</option>
+        <option value="500">Under $500</option>
+        <option value="1000">Luxury ($500+)</option>
+      </select>
+      <button onclick="filterHotels()">Search Hotels</button>
+    </div>
+  </section>
+
+  <section class="hotel-packages">
+    <h2>Available Hotels</h2>
+    <div class="offers-grid">
+
+      <div class="offer-card" data-continent="Asia" data-country="India" data-price="499" data-base-price="499">
+        <img src="luxury_hotel.jpg" alt="Luxury Hotel" />
+        <h3>Luxury Resort</h3>
+        <p></p>
+        <button class="btn" onclick="bookIfLoggedInWithHotelData(
+          'Luxury Resort',
+          'Experience unmatched elegance and top-tier amenities.',
+          'luxury_hotel.jpg',
+          '5-Star Service, Infinity Pool, Spa, Fine Dining',
+          ['Private Beach (0.5 km)', 'Luxury Mall (1 km)', 'Golf Course (3 km)']
+        )">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Asia" data-country="Japan" data-price="299" data-base-price="299">
+        <img src="beach_hotel.jpg" alt="Beach Hotel" />
+        <h3>Beach Paradise</h3>
+        <p></p>
+        <button class="btn" onclick="bookIfLoggedInWithHotelData(
+          'Beach Paradise',
+          'Enjoy serene beach views and tropical vibes.',
+          'beach_hotel.jpg',
+          'Beach Access, Cocktail Bar, Free Breakfast',
+          ['Beach Walkway (0.2 km)', 'Surf School (1 km)', 'Seaside Market (2 km)']
+        )">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Europe" data-country="Italy" data-price="149" data-base-price="149">
+        <img src="city_hotel.jpg" alt="City Hotel" />
+        <h3>City Comfort</h3>
+        <p></p>
+        <button class="btn" onclick="bookIfLoggedInWithHotelData(
+          'City Comfort',
+          'Convenient city location with essential amenities.',
+          'city_hotel.jpg',
+          'Free Wi-Fi, 24/7 Room Service, Business Center',
+          ['Metro Station (0.3 km)', 'Shopping Mall (1.2 km)', 'Museum (2.5 km)']
+        )">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Europe" data-country="Spain" data-price="49" data-base-price="49">
+        <img src="budget_hotel.jpg" alt="Budget Hotel" />
+        <h3>Budget Stay</h3>
+        <p></p>
+        <button class="btn" onclick="bookIfLoggedInWithHotelData(
+          'Budget Stay',
+          'Affordable rooms with all basic comforts.',
+          'budget_hotel.jpg',
+          'Complimentary Wi-Fi, Clean Rooms, Friendly Staff',
+          ['Bus Stop (0.1 km)', 'Local Eateries (0.5 km)', 'Train Station (2 km)']
+        )">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Europe" data-country="United Kingdom" data-price="199" data-base-price="199">
+        <img src="mountain_hotel.jpg" alt="Mountain Hotel" />
+        <h3>Mountain Retreat</h3>
+        <p></p>
+        <button class="btn" onclick="bookIfLoggedInWithHotelData(
+          'Mountain Retreat',
+          'Peaceful retreat surrounded by mountains.',
+          'mountain_hotel.jpg',
+          'Mountain Views, Fireplace Lounge, Nature Trails',
+          ['Hiking Trail (0.3 km)', 'Scenic Point (1 km)', 'Hot Springs (3 km)']
+        )">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Europe" data-country="Turkey" data-price="99" data-base-price="99">
+        <img src="countryside_hotel.jpg" alt="Countryside Hotel" />
+        <h3>Countryside Inn</h3>
+        <p></p>
+        <button class="btn" onclick="bookIfLoggedInWithHotelData(
+          'Countryside Inn',
+          'Quaint and quiet escape in the countryside.',
+          'countryside_hotel.jpg',
+          'Garden Views, Traditional Decor, Home-style Meals',
+          ['Village Market (0.5 km)', 'Farming Fields (1 km)', 'Riverbank (2.5 km)']
+        )">Book Now</button>
+      </div>
+
+    </div>
+    <div id="noHotelsMessage" style="text-align:center; display:none; margin-top: 20px; font-size: 1.2rem; color: #777;">
+      No hotels found matching your criteria.
+    </div>
+  </section>
+
+  <section class="why-choose-us">
+    <h2>Why Choose Us?</h2>
+    <div class="reasons">
+      <div class="reason">
+        <h3>Affordable Price Guarantee</h3>
+        <p>Get the best deals on hotels worldwide.</p>
+      </div>
+      <div class="reason">
+        <h3>Wide Range of Options</h3>
+        <p>From budget stays to luxury resorts.</p>
+      </div>
+      <div class="reason">
+        <h3>Excellent Customer Support</h3>
+        <p>24/7 assistance for your travel needs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <h2>Testimonials</h2>
+    <h4>What our customers say about us</h4>
+    <div class="testimonial-grid">
+      <div class="testimonial"><p>"Stayed at the Luxury Resort. Outstanding experience!"</p><p>- John Doe</p></div>
+      <div class="testimonial"><p>"The Beach Paradise stay made our vacation unforgettable!"</p><p>- Maria Lopez</p></div>
+      <div class="testimonial"><p>"Budget Stay was perfect for our quick trip."</p><p>- Amit Patel</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+
+ 
+  <div id="loginContainer"></div>
+  <div id="sidebarContainer"></div>
+<script src="jspdf.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script src="ticketDownload.js"></script>
+
+  <!-- Hotel Filter + Booking Logic -->
+  <script>
+    const conversionRates = {
+      USD: 1,
+      INR: 86.58,
+      EUR: 0.92
+    };
+
+    function formatPrice(price, currency) {
+      let symbol = "$";
+      if (currency === "INR") symbol = "₹";
+      if (currency === "EUR") symbol = "€";
+      return `${symbol}${price.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+    }
+
+    function updatePricesByCurrency() {
+      const selectedCurrency = document.querySelector(".currency-dropdown").value;
+      const rate = conversionRates[selectedCurrency];
+      const cards = document.querySelectorAll(".offer-card");
+
+      cards.forEach(card => {
+        const basePrice = parseFloat(card.getAttribute("data-base-price"));
+        const price = basePrice * rate;
+        const title = card.querySelector("h3").textContent;
+
+        let stars = "3 Stars";
+        if (title.includes("Luxury")) stars = "5 Stars";
+        else if (title.includes("Beach") || title.includes("Mountain")) stars = "4 Stars";
+        else if (title.includes("Budget")) stars = "2 Stars";
+
+        card.querySelector("p").innerHTML = `${stars} | Starting at ${formatPrice(price, selectedCurrency)}/night`;
+      });
+    }
+
+    document.querySelector(".currency-dropdown").addEventListener("change", () => {
+      updatePricesByCurrency();
+      filterHotels();
+    });
+
+    window.addEventListener("load", () => {
+      updatePricesByCurrency();
+    });
+
+    function filterHotels() {
+      const continent = document.getElementById("hotelContinent").value;
+      const country = document.getElementById("hotelCountry").value;
+      const budget = document.getElementById("hotelBudget").value;
+
+      let budgetLimit = Infinity;
+      if (budget === "100") budgetLimit = 100;
+      else if (budget === "500") budgetLimit = 500;
+      else if (budget === "1000") budgetLimit = 10000;
+
+      const cards = document.querySelectorAll(".offer-card");
+      let matchCount = 0;
+
+      cards.forEach(card => {
+        const cardContinent = card.getAttribute("data-continent");
+        const cardCountry = card.getAttribute("data-country");
+        const cardPrice = parseFloat(card.getAttribute("data-base-price"));
+
+        const matchContinent = continent === "All" || cardContinent === continent;
+        const matchCountry = country === "All" || cardCountry === country;
+        const matchBudget = budget === "Your-Budget" || cardPrice <= budgetLimit;
+
+        if (matchContinent && matchCountry && matchBudget) {
+          card.style.display = "block";
+          matchCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      const noHotels = document.getElementById("noHotelsMessage");
+      noHotels.style.display = matchCount === 0 ? "block" : "none";
+    }
+
+  function bookIfLoggedInWithHotelData(name, description, image, features, nearby) {
+  if (localStorage.getItem("isLoggedIn") === "true") {
+    const selectedCurrency = document.querySelector(".currency-dropdown").value;
+    const baseCard = [...document.querySelectorAll(".offer-card")].find(card =>
+      card.querySelector("h3").textContent === name
+    );
+    const basePrice = parseFloat(baseCard.getAttribute("data-base-price"));
+    const baseCurrency = "USD"; // All your base prices in hotel cards are in USD
+
+    localStorage.setItem("hotelName", name);
+    localStorage.setItem("hotelDescription", description);
+    localStorage.setItem("hotelImage", image);
+    localStorage.setItem("hotelFeatures", features);
+    localStorage.setItem("hotelNearby", JSON.stringify(nearby));
+
+    // 💰 Save clean pricing info
+    localStorage.setItem("hotelPrice", basePrice.toString());
+    localStorage.setItem("hotelCurrency", baseCurrency);
+    localStorage.setItem("selectedCurrency", selectedCurrency);
+
+    window.location.href = "hotel-info.html";
+  } else {
+    document.getElementById("authModal")?.classList.add("show");
+  }
+}
+
+  </script>
+</body>
+</html>

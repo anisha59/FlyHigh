@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tours - Travel Agency</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+   <style>
+     .currency-price {
+    font-weight: bold;
+  }
+   </style>
+</head>
+<body>
+  <header>
+    <div class="title-container">
+      <img src="icon1.png" alt="Travel Agency Logo" class="logo" />
+      <div class="account-currency-container">
+        <select class="currency-dropdown">
+          <option value="INR">INR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <span id="userIconContainer" style="cursor: pointer;">
+  <i class="fas fa-user" id="openAuthModal"></i>
+</span>
+      </div>
+    </div>
+    <div class="navbar-container">
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tours.html" class="active">Tours</a></li>
+          <li><a href="vehicles.html">Vehicles</a></li>
+          <li><a href="hotels.html">Hotels</a></li>
+          <li><a href="houses_villas.html">Houses & Villas</a></li>
+          <li><a href="rewards.html">Rewards</a></li>
+          <li><a href="travel-blog.html">Travel Blog</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Find Your Perfect Tour</h2>
+    <div class="filters">
+      <select id="continent">
+        <option value="All">All Continents</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Africa">Africa</option>
+        <option value="Antarctica">Antarctica</option>
+        <option value="Australia">Australia</option>
+      </select>
+
+      <select id="country">
+        <option value="All">All Countries</option>
+        <option value="Bali">Bali</option>
+        <option value="Europe">Europe</option>
+        <option value="Dubai">Dubai</option>
+        <option value="Maldives">Maldives</option>
+        <option value="Africa">Africa</option>
+        <option value="Antarctica">Antarctica</option>
+        <option value="Thailand">Thailand</option>
+        <option value="New Zealand">New Zealand</option>
+      </select>
+
+      <select id="budget">
+        <option value="Your-Budget">Your Budget ($)</option>
+        <option value="1000">Under $1,000</option>
+        <option value="3000">Under $3,000</option>
+        <option value="5000">Under $5,000</option>
+      </select>
+
+      <button onclick="filterTours()">Find Your Tours</button>
+    </div>
+  </section>
+
+  <section class="tour-packages">
+    <h2>Available Tour Packages</h2>
+    <div class="offers-grid">
+
+      <div class="offer-card" data-continent="Asia" data-country="Bali" data-price="999">
+        <img src="bali.jpg" alt="Bali" />
+        <h3>Bali Paradise</h3>
+        <p>7 Days | $999</p>
+        <button onclick="redirectToInfo('Bali Paradise','7 Days | Starting at $999','bali.jpg','Day 1: Kuta Beach, Day 2: Ubud & Rice Terraces, Day 3: Mount Batur Trek, Day 4: Water Temple, Day 5: Nusa Penida, Day 6: Seminyak, Day 7: Departure',['Scenic beaches', 'Cultural villages', 'Volcano trek', 'Island hopping', 'Balinese cuisine', 'Nightlife', 'Traditional crafts'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Europe" data-country="Europe" data-price="1499">
+        <img src="europe.jpg" alt="Europe" />
+        <h3>European Escape</h3>
+        <p>10 Days | $1,499</p>
+        <button onclick="redirectToInfo('Europe Escape','10 Days | Starting at $1,499','europe.jpg','Day 1-2: Rome (Colosseum, Vatican), Day 3: Florence (Art & Markets), Day 4-5: Venice (Gondola rides, Murano), Day 6-7: Swiss Alps, Day 8-9: Paris (Eiffel Tower, Louvre), Day 10: Departure',['Guided city tours', 'Luxury hotel stays', 'Authentic local cuisine', 'Gondola ride in Venice', 'Eiffel Tower visit', 'Swiss Alps train ride', 'Cultural landmarks'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Asia" data-country="Dubai" data-price="899">
+        <img src="dubai.jpg" alt="Dubai" />
+        <h3>Dubai Adventure</h3>
+        <p>5 Days | $899</p>
+        <button onclick="redirectToInfo('Dubai Adventure','5 Days | Starting at $899','dubai.jpg','Day 1: Marina Dhow Cruise, Day 2: City Tour & Burj Khalifa, Day 3: Desert Safari, Day 4: Miracle Garden, Day 5: Dubai Mall & Departure',['Burj Khalifa entry', 'Desert safari with BBQ dinner', 'Luxury hotel stay', 'Shopping at Dubai Mall', 'Fountain show', 'Cultural souks', 'Modern architecture'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Asia" data-country="Maldives" data-price="599">
+        <img src="maldives.jpg" alt="Maldives" />
+        <h3>Maldives Getaway</h3>
+        <p>7 Days | $599</p>
+        <button onclick="redirectToInfo('Maldives Getaway','7 Days | Starting at $599','maldives.jpg','Day 1: Arrival & Overwater Villa Check-in, Day 2: Snorkeling & Coral Reef Tour, Day 3: Island Hopping, Day 4: Spa Day, Day 5: Water Sports, Day 6: Beachside Dinner, Day 7: Departure',['Overwater villas', 'Crystal-clear waters', 'Romantic sunset views', 'Water sports', 'Spa relaxation', 'Island hopping tours', 'Beachfront dining'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Africa" data-country="Africa" data-price="699">
+        <img src="africa.jpg" alt="Africa" />
+        <h3>African Safari</h3>
+        <p>4 Days | $699</p>
+        <button onclick="redirectToInfo('African Safari','4 Days | Starting at $699','africa.jpg','Day 1: Nairobi Arrival & Welcome Dinner, Day 2-3: Masai Mara Safari, Day 4: Cultural Tour & Departure',['Big 5 game drives', 'Luxury safari lodges', 'Masai village visit', 'Savannah sunset', 'Local tribal performances', 'Wildlife photography', 'Campfire dinners'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Antarctica" data-country="Antarctica" data-price="899">
+        <img src="antarctica.jpg" alt="Antarctica" />
+        <h3>Antarctic Expedition</h3>
+        <p>5 Days | $899</p>
+        <button onclick="redirectToInfo('Antarctic Expedition','5 Days | Starting at $899','antarctica.jpg','Day 1: Flight to Ushuaia & Briefing, Day 2: Cruise Embarkation, Day 3-4: Antarctic Peninsula (Zodiac landings, Penguin watching), Day 5: Return to Ushuaia',['Wildlife sightings', 'Glacier exploration', 'Expert-led lectures', 'Zodiac boat excursions', 'Penguin colonies', 'Iceberg views', 'Adventure cruise'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Asia" data-country="Thailand" data-price="659">
+        <img src="thai.jpg" alt="Thailand" />
+        <h3>Thai Tropical Escape</h3>
+        <p>4 Days | $659</p>
+        <button onclick="redirectToInfo('Thai Tropical Escape','4 Days | Starting at $659','thai.jpg','Day 1: Bangkok Arrival & Night Market, Day 2: Grand Palace & Temples Tour, Day 3: Floating Market & Thai Cooking Class, Day 4: Phuket Beach Relaxation',['Cultural temple tours', 'Thai street food', 'Floating markets', 'Beach time in Phuket', 'Nightlife in Bangkok', 'Elephant sanctuary (optional)', 'Thai massage experience'])">Book Now</button>
+      </div>
+
+      <div class="offer-card" data-continent="Australia" data-country="New Zealand" data-price="899">
+        <img src="zealand.jpg" alt="New Zealand" />
+        <h3>New Zealand Wonders</h3>
+        <p>9 Days | $899</p>
+        <button onclick="redirectToInfo('New Zealand Wonders','9 Days | Starting at $899','zealand.jpg','Day 1: Auckland City Tour, Day 2: Hobbiton Village, Day 3: Rotorua Hot Springs, Day 4: Queenstown Adventure Sports, Day 5: Milford Sound Cruise, Day 6: Glacier Walk, Day 7-8: Lake Tekapo & Mt. Cook, Day 9: Departure',['Hobbiton movie set', 'Adventure sports', 'Milford Sound cruise', 'Glowworm caves', 'Mountain hikes', 'Glacier exploration', 'Lakeside relaxation'])">Book Now</button>
+      </div>
+
+    </div>
+    <div id="noToursMessage" style="text-align:center; display:none; margin-top: 20px; font-size: 1.2rem; color: #777;">
+      No tours found matching your criteria.
+    </div>
+  </section>
+  <section class="why-choose-us">
+  <h2>Why Choose Us?</h2>
+  <div class="reasons">
+    <div class="reason">
+      <h3>Expertly Curated Experiences</h3>
+      <p>Each tour is designed by travel experts to give you unforgettable memories.</p>
+    </div>
+    <div class="reason">
+      <h3>Customizable Packages</h3>
+      <p>Choose destinations, duration, and activities that suit your style.</p>
+    </div>
+    <div class="reason">
+      <h3>Trusted Local Guides</h3>
+      <p>Explore like a local with guides who know the heart of each destination.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>Testimonials</h2>
+  <h4>What travelers say about our tours</h4>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <p>"The Europe Explorer Tour was absolutely magical – great planning!"</p>
+      <p>- Riya Kapoor</p>
+    </div>
+    <div class="testimonial">
+      <p>"Our desert safari in Dubai was the highlight of our honeymoon!"</p>
+      <p>- Jack & Ayesha</p>
+    </div>
+    <div class="testimonial">
+      <p>"A well-organized tour to Thailand. Loved every bit of it!"</p>
+      <p>- Sandeep Verma</p>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
+  </footer>
+
+  <!-- Filter Logic -->
+  <script>
+    function filterTours() {
+      const continent = document.getElementById("continent").value;
+      const country = document.getElementById("country").value;
+      const budget = document.getElementById("budget").value;
+
+      let budgetLimit = Infinity;
+      if (budget === "1000") budgetLimit = 1000;
+      else if (budget === "3000") budgetLimit = 3000;
+      else if (budget === "5000") budgetLimit = 5000;
+
+      const tourCards = document.querySelectorAll(".offer-card");
+      let matchCount = 0;
+
+      tourCards.forEach(card => {
+        const cardContinent = card.getAttribute("data-continent");
+        const cardCountry = card.getAttribute("data-country");
+        const cardPrice = parseInt(card.getAttribute("data-price"));
+
+        const matchContinent = continent === "All" || cardContinent === continent;
+        const matchCountry = country === "All" || cardCountry === country;
+        const matchBudget = budget === "Your-Budget" || cardPrice <= budgetLimit;
+
+        if (matchContinent && matchCountry && matchBudget) {
+          card.style.display = "block";
+          matchCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      document.getElementById("noToursMessage").style.display = matchCount === 0 ? "block" : "none";
+    }
+
+    function redirectToInfo(title, description, imagePath, itinerary, highlights) {
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      document.getElementById("authModal")?.classList.add("show");
+      return;
+    }
+
+    localStorage.setItem('title', title);
+    localStorage.setItem('description', description);
+    localStorage.setItem('image', imagePath);
+    localStorage.setItem('itinerary', itinerary);
+    localStorage.setItem('highlights', JSON.stringify(highlights));
+    window.location.href = 'tour-info.html';
+  }
+  </script>
+  
+  
+  <div id="loginContainer"></div>
+  <div id="sidebarContainer"></div>
+<script src="jspdf.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script src="ticketDownload.js"></script>
+
+<script src="tour-info.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Inject login modal
+    fetch("login.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("loginContainer").innerHTML = html;
+        setTimeout(attachAuthHandlers, 200); // from auth.js
+      });
+
+    // Inject sidebar if logged in
+    if (localStorage.getItem("isLoggedIn") === "true") {
+  if (typeof loadSidebar === "function") {
+    loadSidebar();
+  } else {
+    // wait and retry if auth.js hasn't loaded yet
+    setTimeout(() => {
+      if (typeof loadSidebar === "function") loadSidebar();
+    }, 300);
+  }
+}
+  });
+</script>
+<script>
+  const currencyRates = {
+    USD: 1,
+    INR: 86.58,
+    EUR: 0.92
+  };
+
+  const currencySymbols = {
+    USD: '$',
+    INR: '₹',
+    EUR: '€'
+  };
+
+  let currentCurrency = localStorage.getItem("selectedCurrency") || "USD";
+  document.querySelector(".currency-dropdown").value = currentCurrency;
+
+  function formatPrice(amount, currency) {
+    return currencySymbols[currency] + amount.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  }
+
+  function updateTourPrices() {
+    document.querySelectorAll(".offer-card").forEach(card => {
+      const basePriceUSD = parseFloat(card.getAttribute("data-price"));
+      const durationText = card.querySelector("p").textContent.split("|")[0].trim();
+      const converted = basePriceUSD * currencyRates[currentCurrency];
+      card.querySelector("p").textContent = `${durationText} | ${formatPrice(converted, currentCurrency)}`;
+    });
+  }
+
+  document.querySelector(".currency-dropdown").addEventListener("change", () => {
+    currentCurrency = document.querySelector(".currency-dropdown").value;
+    localStorage.setItem("selectedCurrency", currentCurrency);
+    updateTourPrices();
+  });
+
+  // Run on load
+  updateTourPrices();
+</script>
+
+
+</body>
+</html>
