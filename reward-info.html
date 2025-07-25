@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reward Info</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    .reward-info-container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .reward-info-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- You can keep same header/nav structure here -->
+  </header>
+
+  <div class="reward-info-container">
+    <h2 id="rewardTitle"></h2>
+    <img id="rewardImage" src="" alt="Reward Image">
+    <p id="rewardDescription"></p>
+    <h4>Points Required</h4>
+    <p id="rewardPoints"></p>
+    <h4>Terms & Conditions</h4>
+    <p id="rewardTerms"></p>
+    <button class="btn-back" onclick="history.back()">← Back</button>
+  </div>
+
+  <script>
+    // Parse URL parameters
+    const params = new URLSearchParams(window.location.search);
+
+    document.getElementById("rewardTitle").textContent = params.get("title");
+    document.getElementById("rewardImage").src = params.get("img");
+    document.getElementById("rewardImage").alt = params.get("title");
+    document.getElementById("rewardDescription").textContent = params.get("desc");
+    document.getElementById("rewardPoints").textContent = params.get("points");
+    document.getElementById("rewardTerms").textContent = params.get("terms");
+  </script>
+
+</body>
+</html>
