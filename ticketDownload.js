@@ -1,22 +1,23 @@
-// ticketDownload.js
-
 document.addEventListener("click", function (e) {
-  if (e.target && e.target.classList.contains("download-icon-btn")) {
-    const targetId = e.target.getAttribute("data-ticket-id");
-    const original = document.getElementById(targetId);
+  if (e.target.closest(".download-icon-btn")) {
+    const btn = e.target.closest(".download-icon-btn");
+    const ticketId = btn.getAttribute("data-ticket-id");
+    const original = document.getElementById(ticketId);
+
     if (!original) {
-      console.error("Ticket not found:", targetId);
+      console.error("Ticket not found:", ticketId);
       return;
     }
 
     const clone = original.cloneNode(true);
     clone.classList.add("ticket-pdf-style");
 
-    // Remove unnecessary buttons
+    // Remove buttons from clone
     clone.querySelector(".download-icon-btn")?.remove();
     clone.querySelector(".cancel-btn")?.remove();
+    clone.querySelector(".remove-btn")?.remove();
 
-    // Inject custom styles directly into the clone
+    // Inline PDF styles
     const style = document.createElement("style");
     style.textContent = `
       .ticket-pdf-style {
@@ -56,35 +57,34 @@ document.addEventListener("click", function (e) {
     `;
     clone.prepend(style);
 
-    // Put inside hidden container
-    const container = document.createElement("div");
-    container.style.position = "fixed";
-    container.style.left = "-9999px";
-    container.appendChild(clone);
-    document.body.appendChild(container);
+    // Add clone to invisible container
+    const hiddenDiv = document.createElement("div");
+    hiddenDiv.style.position = "fixed";
+    hiddenDiv.style.left = "-9999px";
+    hiddenDiv.appendChild(clone);
+    document.body.appendChild(hiddenDiv);
 
-    const dateText = clone.querySelector(".ticket-type")?.innerText || "Date";
-    const safeDate = dateText.replace(/\W+/g, "_").substring(0, 15);
+    const title = clone.querySelector(".ticket-title")?.innerText || "Ticket";
+    const safeTitle = title.replace(/\W+/g, "_").substring(0, 20);
+    const filename = `Ticket_${safeTitle}_${Date.now()}.pdf`;
 
     const opt = {
       margin: 0.3,
-      filename: `Ticket_${safeDate}.pdf`,
+      filename: filename,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
     };
 
     html2pdf().from(clone).set(opt).save().then(() => {
-      document.body.removeChild(container);
+      document.body.removeChild(hiddenDiv);
       const toast = document.getElementById("pdfToast");
       if (toast) {
         toast.style.display = "block";
-        setTimeout(() => {
-          toast.style.display = "none";
-        }, 2200);
+        setTimeout(() => { toast.style.display = "none"; }, 2200);
       }
-    }).catch((err) => {
-      console.error("PDF generation error:", err);
+    }).catch(err => {
+      console.error("PDF error:", err);
     });
   }
 });
