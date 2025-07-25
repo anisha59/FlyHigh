@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
 
-/* Card styles */
+/* Remove link styles from reward cards */
 .reward-card {
   background: #fff;
   border-radius: 12px;
@@ -19,13 +19,15 @@
   cursor: pointer;
   width: 100%;
   max-width: 280px;
+  text-decoration: none;       /* Remove underline */
+  color: inherit;              /* Use normal text color */
+  display: block;              /* So padding and width apply properly */
 }
 
 /* Hover animation */
 .reward-card:hover {
   transform: translateY(-5px);
 }
-
 /* Card image */
 .reward-card img {
   width: 100%;
@@ -62,6 +64,7 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
 
   </style>
 </head>
@@ -102,50 +105,45 @@
     <p>Join our loyalty program and enjoy exclusive benefits on your travels.</p>
     <button>Join Now</button>
   </section>
+<div class="rewards-grid">
 
-  <section id="rewards-grid">
-    <h2 style="text-align:center;">Your Rewards</h2>
-    <div class="rewards-grid">
-      <div class="reward-card" onclick="viewReward('Free Trips', 'Accumulate points to earn free trips to your favorite destinations.', 'free_trip.jpg', 'You need 1000 points to unlock a free trip. Valid for any destination listed under our tours. Travel must be booked within 6 months of redemption.', '1000 Points')">
-        <img src="free_trip.jpg" alt="Free Trip">
-        <h3>Free Trips</h3>
-        <p>Accumulate points to earn free trips to your favorite destinations.</p>
-      </div>
-      <div class="reward-card" onclick="viewReward('Exclusive Discounts', 'Get up to 50% off on select tours and packages.', 'discount.webp', 'Discounts apply only to select packages. Cannot be combined with other offers. Offer expires 30 days after claim.', '500 Points')">
-        <img src="discount.webp" alt="Discount">
-        <h3>Exclusive Discounts</h3>
-        <p>Get up to 50% off on select tours and packages.</p>
-      </div>
-      <div class="reward-card" onclick="viewReward('VIP Access', 'Enjoy priority booking and special privileges.', 'vip.jpg', 'Includes early access to booking windows, VIP lounges, and concierge support. Valid for 1 year after activation.', '750 Points')">
-        <img src="vip.jpg" alt="VIP Access">
-        <h3>VIP Access</h3>
-        <p>Enjoy priority booking and special privileges.</p>
-      </div>
-      <div class="reward-card" onclick="viewReward('Cashback Offers', 'Earn cashback on every booking and redeem it for future trips.', 'cashback.png', 'Cashback will be credited to your wallet and can be used for any future booking. Minimum cashback redemption is $25.', '300 Points')">
-        <img src="cashback.png" alt="Cashback">
-        <h3>Cashback Offers</h3>
-        <p>Earn cashback on every booking and redeem it for future trips.</p>
-      </div>
-    </div>
-  </section>
+  <a href="reward-info.html?title=Free%20Trips&desc=Accumulate%20points%20to%20earn%20free%20trips%20to%20your%20favorite%20destinations.&img=free_trip.jpg&terms=You%20need%201000%20points%20to%20unlock%20a%20free%20trip.%20Valid%20for%20any%20destination%20listed%20under%20our%20tours.%20Travel%20must%20be%20booked%20within%206%20months%20of%20redemption.&points=1000%20Points" class="reward-card">
+    <img src="free_trip.jpg" alt="Free Trip">
+    <h3>Free Trips</h3>
+    <p>Accumulate points to earn free trips to your favorite destinations.</p>
+  </a>
 
-  <section id="reward-detail" class="reward-detail">
-    <h2 id="reward-title"></h2>
-    <img id="reward-image" src="" alt="Reward Image">
-    <p id="reward-description"></p>
-    <h4>Points Required</h4>
-    <p id="reward-points"></p>
-    <h4>Terms & Conditions</h4>
-    <p id="reward-terms"></p>
-    <button class="btn-back" onclick="backToRewards()">← Back to Rewards</button>
-  </section>
+  <a href="reward-info.html?title=Exclusive%20Discounts&desc=Get%20up%20to%2050%25%20off%20on%20select%20tours%20and%20packages.&img=discount.webp&terms=Discounts%20apply%20only%20to%20select%20packages.%20Cannot%20be%20combined%20with%20other%20offers.%20Offer%20expires%2030%20days%20after%20claim.&points=500%20Points" class="reward-card">
+    <img src="discount.webp" alt="Exclusive Discounts">
+    <h3>Exclusive Discounts</h3>
+    <p>Get up to 50% off on select tours and packages.</p>
+  </a>
+
+  <a href="reward-info.html?title=VIP%20Access&desc=Enjoy%20priority%20booking%20and%20special%20privileges.&img=vip.jpg&terms=Includes%20early%20access%20to%20booking%20windows,%20VIP%20lounges,%20and%20concierge%20support.%20Valid%20for%201%20year%20after%20activation.&points=750%20Points" class="reward-card">
+    <img src="vip.jpg" alt="VIP Access">
+    <h3>VIP Access</h3>
+    <p>Enjoy priority booking and special privileges.</p>
+  </a>
+
+  <a href="reward-info.html?title=Cashback%20Offers&desc=Earn%20cashback%20on%20every%20booking%20and%20redeem%20it%20for%20future%20trips.&img=cashback.png&terms=Cashback%20will%20be%20credited%20to%20your%20wallet%20and%20can%20be%20used%20for%20any%20future%20booking.%20Minimum%20cashback%20redemption%20is%20$25.&points=300%20Points" class="reward-card">
+    <img src="cashback.png" alt="Cashback Offers">
+    <h3>Cashback Offers</h3>
+    <p>Earn cashback on every booking and redeem it for future trips.</p>
+  </a>
+
+</div>
 
   <footer>
     <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
   </footer>
-  <div id="loginContainer"></div>
-<div id="sidebarContainer"></div>
-<script src="auth.js"></script>
+    <div id="loginContainer"></div>
+  <div id="sidebarContainer"></div>
+<script src="jspdf.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="profileSidebar.js"></script>
+<script src="ticketDownload.js"></script>
 
 </body>
 </html>
