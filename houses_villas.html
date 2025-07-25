@@ -74,13 +74,13 @@
       <select id="villaCountry">
         <option value="All">All Countries</option>
         <option value="Bali">Bali</option>
-        <option value="Europe">Europe</option>
+        <option value="France">France</option>
         <option value="Dubai">Dubai</option>
         <option value="Maldives">Maldives</option>
-        <option value="Africa">Africa</option>
+        <option value="Greece">Greece</option>
         <option value="Antarctica">Antarctica</option>
-        <option value="Thailand">Thailand</option>
-        <option value="New Zealand">New Zealand</option>
+        <option value="Italy">Italy</option>
+        <option value="Switzerland">Switzerland</option>
       </select>
       <select id="villaBudget">
         <option value="Your-Budget">Your Budget ($)</option>
@@ -222,6 +222,27 @@
     <button class="btn">Book Now</button>
   </a>
 </div>
+<div class="offer-card" data-continent="Antarctica" data-country="Antarctica" data-price="1099">
+  <img src="Antarctica.jpg" alt="Antarctic Ice Dome">
+  <h3>Antarctic Ice Dome</h3>
+  <p class="star-rating">★★★☆☆</p>
+  <p>2 Bedrooms | Heated Igloo | Starting at $1099/night</p>
+  <a href="https://www.google.com/maps?q=Antarctica+Ice+Dome" class="map-link" target="_blank">📍 View on Map</a>
+  <a href="#" class="btn-link"
+     onclick="goToVillaInfo(
+  'Antarctic Ice Dome',
+  'Experience life at the edge of the Earth in a heated luxury dome.',
+  'Antarctica.jpg',
+  '2 Bedrooms, Heated Dome, Aurora Views, Snowmobiles',
+  ['South Pole Station (2 km)', 'Ice Cave Tours (0.5 km)', 'Penguin Colony (1.2 km)'],
+  3.0,
+  { lat: -90.0, lng: 0.0 },
+  1099
+)">
+    <button class="btn">Book Now</button>
+  </a>
+</div>
+
       <!-- Add other villas similarly with appropriate data-* attributes -->
     </div>
     <div id="noVillasMessage" style="text-align:center; display:none; margin-top: 20px; font-size: 1.2rem; color: #777;">
@@ -269,7 +290,7 @@
     <p>&copy; 2025 FlyHigh Travel Agency | All Rights Reserved</p>
   </footer>
 
- 
+
   <div id="loginContainer"></div>
   <div id="sidebarContainer"></div>
 <script src="jspdf.min.js"></script>
@@ -303,7 +324,7 @@
   localStorage.setItem('villaRating', rating);
   localStorage.setItem('villaLat', mapLocation.lat);
   localStorage.setItem('villaLng', mapLocation.lng);
-  localStorage.setItem('villaPrice', price); // ✅ New line to store price
+  localStorage.setItem('villaCurrency', 'USD'); // or dynamically set if multi-currency later
 
   window.location.href = 'houses_villas-info.html';
 }
@@ -385,6 +406,5 @@
     // Run on load
     convertVillaPrices();
   </script>
-  <script src="auth.js"></script>
 </body>
 </html>
