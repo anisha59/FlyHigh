@@ -85,13 +85,24 @@ function initializeProfileSidebar() {
           clone.style.background = "#ffffff";
           clone.style.color = "#000";
 
-          const container = document.createElement("div");
-          container.appendChild(clone);
-          container.querySelector(".download-icon-btn")?.remove();
-          container.querySelector(".cancel-btn")?.remove();
-          container.style.position = "fixed";
-          container.style.top = "-9999px";
-          document.body.appendChild(container);
+          const wrapper = document.createElement("div");
+wrapper.className = "ticket-pdf-style";
+wrapper.appendChild(clone);
+
+// Apply styles directly
+wrapper.style.padding = "20px";
+wrapper.style.border = "1px solid #ccc";
+wrapper.style.fontFamily = "Arial, sans-serif";
+wrapper.style.width = "600px";
+wrapper.style.background = "#ffffff";
+wrapper.style.color = "#000";
+
+const container = document.createElement("div");
+container.style.position = "fixed";
+container.style.top = "-9999px";
+container.appendChild(wrapper);
+document.body.appendChild(container);
+
 
           const title = clone.querySelector(".ticket-title")?.innerText || "Ticket";
           const date = clone.querySelector(".ticket-type")?.innerText.split("|")[1]?.trim() || "Date";
@@ -126,22 +137,47 @@ function initializeProfileSidebar() {
     const cancelledTickets = cancelled[userEmail] || [];
 
     cancelledListElement.innerHTML = cancelledTickets.length
-      ? cancelledTickets.map(ticket => `
-        <li>
-          <div class="ticket-flex-row">
-            <div class="ticket-left">
-              <div class="ticket-title">${ticket.title}</div>
-              <div class="ticket-traveler">👤 ${ticket.travelerName}</div>
-              <div class="ticket-travelers-count">👥 ${ticket.travelers} Traveler${ticket.travelers > 1 ? "s" : ""}</div>
-              <div class="ticket-type">${ticket.type.toUpperCase()} | ${ticket.date}</div>
-              <div class="ticket-time">${currencySymbols[ticket.currency] || "$"}${ticket.price.toLocaleString()} | ${ticket.paymentMethod}</div>
-              <div class="ticket-date">Cancelled On: ${ticket.cancelledAt || "N/A"}</div>
-            </div>
-          </div>
-        </li>
-      `).join('')
-      : "<li>No cancelled tickets yet.</li>";
+  ? cancelledTickets.map((ticket, index) => `
+    <li>
+  <div class="ticket-flex-row cancelled-ticket-card" data-index="${index}">
+    <button class="remove-cancelled-btn" title="Remove Ticket">❌</button>
+    <div class="ticket-left">
+      <div class="ticket-title">${ticket.title}</div>
+      <div class="ticket-traveler">👤 ${ticket.travelerName}</div>
+      <div class="ticket-travelers-count">👥 ${ticket.travelers} Traveler${ticket.travelers > 1 ? "s" : ""}</div>
+      <div class="ticket-type">${ticket.type.toUpperCase()} | ${ticket.date}</div>
+      <div class="ticket-time">${currencySymbols[ticket.currency] || "$"}${ticket.price.toLocaleString()} | ${ticket.paymentMethod}</div>
+      <div class="ticket-date">Cancelled On: ${ticket.cancelledAt || "N/A"}</div>
+    </div>
+  </div>
+</li>
+  `).join('')
+  : "<li>No cancelled tickets yet.</li>";
+document.querySelectorAll(".remove-cancelled-btn").forEach(btn => {
+  btn.addEventListener("click", function () {
+    const parent = this.closest(".cancelled-ticket-card");
+    const index = parseInt(parent.dataset.index);
 
+    const userEmail = localStorage.getItem("userEmail");
+    const cancelledData = JSON.parse(localStorage.getItem("cancelledTickets") || "{}");
+    const cancelledTickets = cancelledData[userEmail] || [];
+
+    if (!isNaN(index) && index >= 0 && index < cancelledTickets.length) {
+      cancelledTickets.splice(index, 1);
+      cancelledData[userEmail] = cancelledTickets;
+      localStorage.setItem("cancelledTickets", JSON.stringify(cancelledData));
+
+      parent.remove();
+
+      // ✅ After removal, check if list is empty
+      const remainingCards = document.querySelectorAll(".cancelled-ticket-card");
+      if (remainingCards.length === 0) {
+        const cancelledListElement = document.getElementById("allCancelledList");
+        cancelledListElement.innerHTML = `<li>No cancelled tickets yet.</li>`;
+      }
+    }
+  });
+});
     document.getElementById("fullCancelledModal").classList.add("show");
     document.body.classList.add("modal-open");
   });
@@ -160,4 +196,47 @@ function initializeProfileSidebar() {
     localStorage.clear();
     location.reload();
   });
+}function renderCancelledTickets() {
+  const userEmail = localStorage.getItem("userEmail");
+  if (!userEmail) return;
+
+  const cancelledData = JSON.parse(localStorage.getItem("cancelledTickets") || "{}");
+  const cancelledTickets = cancelledData[userEmail] || [];
+
+  const cancelledContainer = document.getElementById("cancelledTicketsList");
+  cancelledContainer.innerHTML = ""; // Clear previous
+
+  cancelledTickets.forEach((ticket, index) => {
+    const ticketDiv = document.createElement("div");
+    ticketDiv.className = "cancelled-ticket-item";
+    ticketDiv.innerHTML = `
+      <span>${ticket.title}</span>
+      <span class="remove-cancelled" data-index="${index}">❌</span>
+    `;
+    cancelledContainer.appendChild(ticketDiv);
+  });
+
+  // Attach delete events
+  document.querySelectorAll(".remove-cancelled").forEach(icon => {
+    icon.addEventListener("click", function () {
+      const index = this.dataset.index;
+      removeCancelledTicket(index);
+    });
+  });
 }
+function removeCancelledTicket(index) {
+  const userEmail = localStorage.getItem("userEmail");
+  if (!userEmail) return;
+
+  const cancelledData = JSON.parse(localStorage.getItem("cancelledTickets") || "{}");
+  const cancelledTickets = cancelledData[userEmail] || [];
+
+  cancelledTickets.splice(index, 1); // Remove selected
+
+  cancelledData[userEmail] = cancelledTickets;
+  localStorage.setItem("cancelledTickets", JSON.stringify(cancelledData));
+
+  renderCancelledTickets(); // Refresh UI
+}
+
+window.initializeProfileSidebar = initializeProfileSidebar;
